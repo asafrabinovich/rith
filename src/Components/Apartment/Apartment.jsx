@@ -1,32 +1,60 @@
 import React, {Component} from "react";
-import Form from "../Common/Form";
+import Joi from "joi-browser";
 import {getApartment, getLatestPayments} from "../../Services/FakeAptService";
 import {Container, GridList, GridListTile} from "@material-ui/core";
-import ImagesGallery from "../Common/ImagesGallery";
-import Malfunctions from "./Malfunctions";
+import Form from "../Utils/Form";
+import ReviewsTable from "../Review/ReviewsTable";
 
-export default class Review extends Form {
 
-    state = {
-        data: {}
-
+export default class Apartment extends Form{
+    constructor({match, history}) {
+        super();
     }
+    state = {
+        data: {
+            street: '',
+            streetNumber: '',
+            city: '',
+            apartmentNumber: '',
+            floorNumber: '',
+            numberOfRooms:'',
+            squareFit: '',
+            ownerName: '',
+            rent: '',
+            waterBill: '',
+            electricityBill: '',
+            taxProperty: '',
+        },
+        apartmentId:'',
+        reviews: []
+    }
+
 
     async componentDidMount() {
-        await this.populateReview();
-    }
-    populateReview = async ()=>{
-        const apartmentId = this.props.match.params.apartmentId;
-        const reviewId = this.props.match.params.reviewId;
-        const apartment = getApartment(apartmentId);
-        // await this.setState({data: this.mapToViewDetails(apartment)});
-        await this.setState({data:this.mapToViewModel(apartment,reviewId) });
-        console.log(this.state)
-    }
+       await this.checkIfApartmentHasMoreThanOneReview();
+        // await this.populateApartment();
+    };
 
-    mapToViewModel =  (apartment,reviewId)=> {
-        let review = {...apartment.listOfReviews.filter(review => review._id === reviewId)};
-        review = review[0];
+    checkIfApartmentHasMoreThanOneReview = async () =>{
+        const apartmentId = this.props.match.params.apartmentId;
+        await this.setState({apartmentId});
+        const apartment = getApartment(apartmentId);
+        if(apartment.listOfReviews.length <=1){
+            this.props.history.push(`/apartments/${apartment._id}/reviews/${apartment.listOfReviews[0]._id}`);
+        }
+        else{
+           await this.setState({data: this.mapToViewModel(apartment)});
+           await this.setState({reviews:apartment.listOfReviews })
+            // this.populateReviews(apartment);
+
+        }
+    }
+    handleReviewChosen = (reviewId) =>{
+        const {apartmentId} = this.state;
+        this.props.history.push(`/apartments/${apartmentId}/reviews/${reviewId}`);
+    }
+    mapToViewModel(apartment) {
+        const lastPayments= getLatestPayments(apartment);
         return {
             street:apartment.street,
             streetNumber: apartment.streetNumber,
@@ -35,16 +63,17 @@ export default class Review extends Form {
             floorNumber: apartment.floorNumber,
             numberOfRooms:apartment.numberOfRooms,
             squareFit: apartment.squareFit,
-            ownerName:apartment.ownerName,
-            rent: review.lastRent,
-            waterBill: review.lastWaterBill,
-            electricityBill:review.lastElectricityBill ,
-            taxProperty: review.lastPropertyTax,
-            malfunctions: review.listOfMalfunctions
+            ownerName:apartment.ownerDocument,
+            rent: lastPayments.latestRent,
+            waterBill: lastPayments.latestWaterBill,
+            electricityBill:lastPayments.latestElectricityBill ,
+            taxProperty: lastPayments.latestPropertyTax,
         }
     }
-    render() {
-        const {street,streetNumber,city,apartmentNumber,floorNumber,numberOfRooms,squareFit,ownerName,rent,waterBill,electricityBill,taxProperty,malfunctions} = this.state.data;
+
+    render(){
+        const {street,streetNumber,city,apartmentNumber,floorNumber,numberOfRooms,squareFit,ownerName,rent,waterBill,electricityBill,taxProperty} = this.state.data;
+        const {reviews} = this.state;
         const headline = "רחוב " + street + " " + streetNumber;
         const subHeadline =  city + ", דירה " + apartmentNumber;
         const squareFitText = squareFit + ' מ"ר';
@@ -52,12 +81,15 @@ export default class Review extends Form {
         const lastWaterBill = waterBill  + '₪ לחודש';
         const lastElectricityBill = electricityBill  + '₪ לחודש';
         const lastTaxProperty = taxProperty  + '₪ לחודש';
-        return(
+
+        const numbersOfReviewsText = reviews.length + ' ביקורות';
+
+        return (
             <React.Fragment>
                 <Container className='rtl w-75'>
                     <Container className='text-center mt-5 '>
-                        <h1 className=''>יונה הנביא דירה 14</h1>
-                        <h5>דיירים: עומרי ועדי</h5>
+                        <h1 className=''>{headline}</h1>
+                        <h5>{subHeadline}</h5>
                     </Container>
                     <Container className='mt-5'>
                         <h2 className='mb-3'>פרטים על הדירה:</h2>
@@ -81,16 +113,17 @@ export default class Review extends Form {
                         </GridList>
                     </Container>
                     <Container>
-                        {/*<h2 className=''>ביקורות:</h2>*/}
-                        <Malfunctions
-                            malfunctions={malfunctions}
-                            viewOnly={true}
+                        <h2 className=''>ביקורות:</h2>
+                        <p className='text-justify'>{numbersOfReviewsText}</p>
+                        <ReviewsTable
+                            reviews = {reviews}
+                            onClick ={this.handleReviewChosen}
                         />
                     </Container>
                 </Container>
 
 
             </React.Fragment>
-        );
-    }
+        )
+    };
 }

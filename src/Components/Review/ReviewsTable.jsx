@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import ApartmentWidget from "./ApartmentWidget";
+import ApartmentWidget from "../Apartment/ApartmentWidget";
 import {GridList} from "@material-ui/core";
 import {GridListTile} from "@material-ui/core";
 import ReviewWidget from "./ReviewWidget";

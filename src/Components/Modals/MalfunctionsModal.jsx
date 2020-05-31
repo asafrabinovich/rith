@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Modal,Button} from 'react-bootstrap'
-import ListGroup from "../../Common/ListGroup";
+import ListGroup from "../Utils/ListGroup";
 export default class MalfunctionsModal extends Component {
     state = {
         show: false,

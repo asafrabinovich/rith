@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import MalfunctionsModal from "../../Modals/MalfunctionsModal";
 import {Container, GridList, GridListTile} from "@material-ui/core";
-import FileUploader from "../../../Common/FileUploader";
-import Approved from "../../../../Resources/Images/Approved.png"
-import Disapproved from "../../../../Resources/Images/Disapproved.png"
+import FileUploader from "../../Utils/FileUploader";
+import Approved from "../../../Resources/Images/Approved.png"
+import Disapproved from "../../../Resources/Images/Disapproved.png"
 
 export default class UploadDocsSection extends Component{
     state= {

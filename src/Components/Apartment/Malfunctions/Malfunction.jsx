@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import TextAreaInput from "../Common/TextAreaInput";
-import FileUploader from "../Common/FileUploader";
+import TextAreaInput from "../../Utils/TextAreaInput";
+import FileUploader from "../../Utils/FileUploader";
 import {Container} from "@material-ui/core";
-import {getMalfunctionProps} from "../../Services/FakeAptService";
-import ImagesPreviewer from "../Common/ImagesPreviewer";
-import {fakeUploadImage} from "../../Services/httpService";
-import TextArea from "../Common/TextArea";
-import ImagesGallery from "../Common/ImagesGallery";
+import {getMalfunctionProps} from "../../../Services/FakeAptService";
+import ImagesPreviewer from "../../Utils/ImagesPreviewer";
+import {fakeUploadImage} from "../../../Services/httpService";
+import TextArea from "../../Utils/TextArea";
+import ImagesGallery from "../../Utils/ImagesGallery";
 
 export default class Malfunction extends Component{
     state = {

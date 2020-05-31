@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Joi from 'joi-browser';
-import Form from "../Common/Form";
+import Form from "../Utils/Form";
 import {register} from "../../Services/userService";
 import auth from "../../Services/authService";
 import {Container} from "@material-ui/core";

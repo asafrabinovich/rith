@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import DatePickerInput from "../Common/DatePickerInput";
+import DatePickerInput from "../Utils/DatePickerInput";
 import {Container} from "@material-ui/core";
 
 const AboutUs = () =>{

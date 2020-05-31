@@ -2,22 +2,22 @@ import React, {Component} from 'react';
 import {Route, Switch, Redirect } from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import authService from "./Services/authService";
-import NavBar from "./Components/RITH/Navbar";
-import LoginForm from "./Components/RITH/LoginForm";
-import Logout from "./Components/RITH/Logout";
-import RegisterForm from "./Components/RITH/RegisterForm";
-import AboutUs from "./Components/RITH/AboutUs";
-import ContactForm from "./Components/RITH/ContactForm";
-import NotFound from "./Components/RITH/NotFound";
+import NavBar from "./Components/Layout/Navbar";
+import LoginForm from "./Components/Pages/LoginForm";
+import Logout from "./Components/Pages/Logout";
+import RegisterForm from "./Components/Pages/RegisterForm";
+import AboutUs from "./Components/Pages/AboutUs";
+import ContactForm from "./Components/Pages/ContactForm";
+import NotFound from "./Components/Pages/NotFound";
 import './App.css';
-import Home from "./Components/RITH/Home";
-import ProtectedRoute from "./Components/Common/ProtectedRoute";
-import Apartment from "./Components/RITH/Apartment";
-import UploadReviewWelcome from "./Components/RITH/Upload/NewReview/UploadReviewWelcome";
-import UploadReview from "./Components/RITH/Upload/NewReview/UploadReview";
-import ThankYou from "./Components/RITH/Upload/ThankYou";
-import Review from "./Components/RITH/Review";
-import Footer from "./Components/Common/Footer";
+import Home from "./Components/Pages/Home";
+import ProtectedRoute from "./Components/Utils/ProtectedRoute";
+import Apartment from "./Components/Apartment/Apartment";
+import UploadReviewWelcome from "./Components/Review/NewReview/UploadReviewWelcome";
+import UploadReview from "./Components/Review/NewReview/UploadReview";
+import ThankYou from "./Components/Review/NewReview/ThankYou";
+import Review from "./Components/Review/Review";
+import Footer from "./Components/Utils/Footer";
 
 
 export default class App extends Component{
