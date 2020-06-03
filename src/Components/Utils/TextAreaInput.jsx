@@ -12,8 +12,7 @@ const TextAreaInput = ({name, label, error,headline,subHeadline,onRemove, ...res
                     }} style={{cursor:'pointer'}} className='btn-link ml-1 mt-3 stretched-link'>הסר</p>
                 }
             </div>
-
-            <h6 className='w-75'>{subHeadline}</h6>
+            <h6 className='w-75' style={{fontWeight:'normal'}}>{subHeadline}</h6>
             <textarea
                 {...rest}
                 id={name}
