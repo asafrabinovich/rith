@@ -3,7 +3,7 @@ import Joi from 'joi-browser';
 import Form from "../Utils/Form";
 import {register} from "../../Services/userService";
 import auth from "../../Services/authService";
-import {Container} from "@material-ui/core";
+import {Container, BottomNavigation} from "@material-ui/core";
 
 export default class RegisterForm extends Form{
     state = {
@@ -63,7 +63,7 @@ export default class RegisterForm extends Form{
 
     render() {
         return (
-            <Container className='w-25 rtl mt-5'>
+            <Container className='w-25 rtl mt-5' style={{marginBottom:'50px'}}>
                 <h1 className='text-center'>הרשמה</h1>
                 <form onSubmit= {this.handleSubmit} >
                     {this.renderInput('name', 'שם:')}

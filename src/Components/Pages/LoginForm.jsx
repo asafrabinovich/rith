@@ -67,7 +67,7 @@ export default class LoginForm extends Form{
     render() {
         // if(auth.getCurrentUser()) return <Redirect to='/'/>;
         return (
-            <Container className='rtl w-25 mt-5'>
+            <Container className='rtl w-25 mt-5' style={{marginBottom:'50px'}}>
                 <h1 className='text-center'>התחברות</h1>
                 <h6 className='text-center'>הכנס את פרטי המשתמש שלך</h6>
 
@@ -77,8 +77,8 @@ export default class LoginForm extends Form{
                     <Container className='w-50'>
                         {this.renderButton('אישור')}
                     </Container>
-
                 </form>
+                <div> </div>
             </Container>
         );
     }

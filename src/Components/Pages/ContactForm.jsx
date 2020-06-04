@@ -68,7 +68,7 @@ export default class LoginForm extends Form {
     render() {
         // if(auth.getCurrentUser()) return <Redirect to='/'/>;
         return (
-            <Container className='rtl w-25 mt-5'>
+            <Container className='rtl w-25 mt-5' style={{marginBottom:'50px'}}>
                 <h1 className='text-center'>צור קשר</h1>
 
                 <form onSubmit={this.handleSubmit} className='mt-4' >
