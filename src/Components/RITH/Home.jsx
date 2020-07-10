@@ -18,7 +18,7 @@ export default class Home extends Component {
         const {apartments : allApartments, searchQuery} = this.state;
         let filtered = allApartments;
         if(searchQuery){
-            filtered = allApartments.filter(apartment => apartment.street.toLowerCase().startsWith(searchQuery.toLowerCase()));
+            filtered = allApartments.filter(apartment => apartment.street.toLowerCase().includes(searchQuery.toLowerCase()));
             if(filtered.length < 1){
                 filtered = allApartments.filter(apartment => apartment.city.toLowerCase().includes(searchQuery.toLowerCase()));
             }

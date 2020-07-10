@@ -256,7 +256,8 @@ function buildApartmentIdUrl(apartmentId) {
     const result = apiEndpoint + '/' + apartmentId;
     return result;
 }
-export function saveApartmentReview(apartment) {
+export function saveApartmentReview(apartment) {//cotinue - apartment as json keeps becoming a promise
+    console.log("apt",apartment);
     if(apartment._id){
         const body = {...apartment};
         delete body._id;

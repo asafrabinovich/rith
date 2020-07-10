@@ -32,30 +32,14 @@ export default class LoginForm extends Form{
             })
     };
 
-    // doSubmit = async () =>{
-    //     try {
-    //         const {data} = this.state;
-    //         await auth.login(data.username,data.password);
-    //         const {state} = this.props.location;
-    //         window.location = state ?state.from.pathname : '/';
-    //     }catch (e) {
-    //         if(e.response && (e.response.status === 400 || e.response.status === 401) )
-    //         {
-    //             const errors = {...this.state.errors};
-    //             errors.username = e.response.data;
-    //             this.setState({errors});
-    //         }
-    //     }
-    // };
-
-    doSubmit =  () =>{
+    doSubmit = async () =>{
         try {
             const {data} = this.state;
-            auth.fakeLogin(data.username,data.password);
+            await auth.login(data.username,data.password);
             const {state} = this.props.location;
             window.location = state ?state.from.pathname : '/';
         }catch (e) {
-            if(e.response && e.response.status === 400)
+            if(e.response && (e.response.status === 400 || e.response.status === 401) )
             {
                 const errors = {...this.state.errors};
                 errors.username = e.response.data;
@@ -63,6 +47,22 @@ export default class LoginForm extends Form{
             }
         }
     };
+
+    // doSubmit =  () =>{
+    //     try {
+    //         const {data} = this.state;
+    //         auth.fakeLogin(data.username,data.password);
+    //         const {state} = this.props.location;
+    //         window.location = state ?state.from.pathname : '/';
+    //     }catch (e) {
+    //         if(e.response && e.response.status === 400)
+    //         {
+    //             const errors = {...this.state.errors};
+    //             errors.username = e.response.data;
+    //             this.setState({errors});
+    //         }
+    //     }
+    // };
 
     render() {
         // if(auth.getCurrentUser()) return <Redirect to='/'/>;

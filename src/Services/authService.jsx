@@ -7,12 +7,27 @@ const apiEndpoint = apiUrl;
 
 const tokenKey = 'token';
 httpService.setJwt(getJwt());
+// export async function login(email,password) {
+//     try {
+//         const {data: jwt} = await httpService.post(apiEndpoint + '/login', {
+//             email: email,
+//             password : password
+//         })
+//         console.log(jwt);
+//         localStorage.setItem(tokenKey, jwt);
+//     }catch (e) {
+//
+//     }
+//
+// }
+
 export async function login(email,password) {
     try {
         const {data: jwt} = await httpService.post(apiEndpoint + '/login', {
-            email: email,
-            password : password
+            "Email": email,
+            "Password" : password
         })
+        console.log(jwt);
         localStorage.setItem(tokenKey, jwt);
     }catch (e) {
 

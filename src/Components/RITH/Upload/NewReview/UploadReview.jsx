@@ -310,10 +310,9 @@ export default class UploadReview extends Form{
 
     doSubmit = async () =>{
         const apartmentJson = this.buildApartmentJson();
-        console.log(apartmentJson);
-        // await saveApartmentReview(json);
-
-        this.props.history.push('/thank-you');
+        await saveApartmentReview(apartmentJson);
+        //
+        // this.props.history.push('/thank-you');
     };
 
     render(){
