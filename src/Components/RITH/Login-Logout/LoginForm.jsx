@@ -39,11 +39,11 @@ export default class LoginForm extends Form{
             const {state} = this.props.location;
             window.location = state ?state.from.pathname : '/';
         }catch (e) {
-            console.log("Entred")
             if(e.response && (e.response.status === 400 || e.response.status === 401) )
             {
+
                 const errors = {...this.state.errors};
-                errors.username = e.response.data;
+                errors.username = "הסיסמא אינה תואמת את כתובת המייל או שאינך רשום";
                 this.setState({errors});
             }
         }

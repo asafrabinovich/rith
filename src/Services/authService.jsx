@@ -28,9 +28,9 @@ export async function login(email,password) {
             "Password" : password
         })
         console.log(jwt);
-        localStorage.setItem(tokenKey, jwt);
+        localStorage.setItem(tokenKey, jwt.data);
     }catch (e) {
-
+        throw e;
     }
 
 }

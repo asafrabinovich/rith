@@ -44,11 +44,12 @@ export default class RegisterForm extends Form{
 
     doSubmit = async () =>{
         try {
-            console.log(this.state.data);
+            const {data} = this.state;
+            console.log("Data:", data)
             const response = await register(this.state.data);
             console.log("Response",response)
-
-            auth.loginWithJwt(response.headers['x-auth-token']);
+            await auth.login(data.username,data.password);
+            // auth.loginWithJwt(response.headers['x-auth-token']);
             window.location = '/';
         }catch (e) {
             if(e.response && e.response.status === 500)

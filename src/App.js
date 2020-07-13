@@ -33,16 +33,14 @@ export default class App extends Component{
         return (
             <React.Fragment>
                 <ToastContainer/>
-                <NavBar />
+                <NavBar user = {user} />
                 <div className='content'>
                     <Switch>
                         <Route path='/home' component={Home}/>
                         <Route path = '/apartments/:apartmentId/reviews/:reviewId' component = {Review}/>
                         <Route path = '/apartments/:apartmentId' component = {Apartment}/>
-                        {/*<Route path='/upload-review/:apartmentId' component={UploadReview}/>*/}
-                        <ProtectedRoute path='/upload-review/:apartmentId' component={UploadReview}/>
-
-                        <Route path='/upload-review' component={UploadReviewWelcome}/>
+                        <Route path='/upload-review/:apartmentId' component={UploadReview}/>
+                        <ProtectedRoute path='/upload-review' component={UploadReviewWelcome}/>
                         <Route path='/thank-you' component={ThankYou}/>
                         <Route path='/login' component={LoginForm}/>
                         <Route path='/logout' component={Logout}/>

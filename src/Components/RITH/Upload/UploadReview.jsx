@@ -281,7 +281,7 @@ export default class UploadReview extends Form{
         const {idFile,leaseFile} =this.state;
         return (idFile && leaseFile) ? false:true;
     }
-    buildApartmentJson = async ()=>{
+    buildApartmentJson =  ()=>{
         const {street,streetNumber,city,apartmentNumber, floorNumber, squareFit, ownerName, rent, waterBill, electricityBill, taxProperty} = this.state.data;
         const {malfunctions,leaseFile,idFile} = this.state;
         const json ={

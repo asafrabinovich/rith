@@ -256,34 +256,14 @@ function buildApartmentIdUrl(apartmentId) {
     const result = apiEndpoint + '/' + apartmentId;
     return result;
 }
-export function saveApartmentReview(apartment) {//cotinue - apartment as json keeps becoming a promise
+export async function saveApartmentReview(apartment) {
     console.log("apt",apartment);
     if(apartment._id){
         const body = {...apartment};
         delete body._id;
-        return httpService.put(buildApartmentIdUrl(apartment._id), body )
+        await httpService.put(buildApartmentIdUrl(apartment._id), body )
     }
 
-    return  httpService.post(apiEndpoint , apartment)
+     await httpService.post(apiEndpoint , apartment)
 }
-//
-// export function saveMovie(movie) {
-//     let movieInDb = movies.find(m => m._id === movie._id) || {};
-//     movieInDb.title = movie.title;
-//     movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
-//     movieInDb.numberInStock = movie.numberInStock;
-//     movieInDb.dailyRentalRate = movie.dailyRentalRate;
-//
-//     if (!movieInDb._id) {
-//         movieInDb._id = Date.now().toString();
-//         movies.push(movieInDb);
-//     }
-//
-//     return movieInDb;
-// }
-//
-// export function deleteMovie(id) {
-//     let movieInDb = movies.find(m => m._id === id);
-//     movies.splice(movies.indexOf(movieInDb), 1);
-//     return movieInDb;
-// }
+
