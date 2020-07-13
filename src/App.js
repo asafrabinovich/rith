@@ -2,21 +2,21 @@ import React, {Component} from 'react';
 import {Route, Switch, Redirect } from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import authService from "./Services/authService";
-import NavBar from "./Components/RITH/Navbar";
-import LoginForm from "./Components/RITH/LoginForm";
-import Logout from "./Components/RITH/Logout";
-import RegisterForm from "./Components/RITH/RegisterForm";
-import AboutUs from "./Components/RITH/AboutUs";
-import ContactForm from "./Components/RITH/ContactForm";
-import NotFound from "./Components/RITH/NotFound";
+import NavBar from "./Components/RITH/Object Model/Navbar";
+import LoginForm from "./Components/RITH/Login-Logout/LoginForm";
+import Logout from "./Components/RITH/Login-Logout/Logout";
+import RegisterForm from "./Components/RITH/Register/RegisterForm";
+import AboutUs from "./Components/RITH/About Us/AboutUs";
+import ContactForm from "./Components/RITH/Contact/ContactForm";
+import NotFound from "./Components/RITH/Object Model/NotFound";
 import './App.css';
-import Home from "./Components/RITH/Home";
+import Home from "./Components/RITH/Home/Home";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
-import Apartment from "./Components/RITH/Apartment";
-import UploadReviewWelcome from "./Components/RITH/Upload/NewReview/UploadReviewWelcome";
-import UploadReview from "./Components/RITH/Upload/NewReview/UploadReview";
+import Apartment from "./Components/RITH/Object Model/Apartment";
+import UploadReviewWelcome from "./Components/RITH/Upload/UploadReviewWelcome";
+import UploadReview from "./Components/RITH/Upload/UploadReview";
 import ThankYou from "./Components/RITH/Upload/ThankYou";
-import Review from "./Components/RITH/Review";
+import Review from "./Components/RITH/Object Model/Review";
 import Footer from "./Components/Common/Footer";
 
 
@@ -40,7 +40,9 @@ export default class App extends Component{
                         <Route path = '/apartments/:apartmentId/reviews/:reviewId' component = {Review}/>
                         <Route path = '/apartments/:apartmentId' component = {Apartment}/>
                         <Route path='/upload-review/:apartmentId' component={UploadReview}/>
-                        <Route path='/upload-review' component={UploadReviewWelcome}/>
+                        {/*<Route path='/upload-review' component={UploadReviewWelcome}/>*/}
+                        <ProtectedRoute path='/upload-review' component={UploadReviewWelcome}/>
+
                         <Route path='/thank-you' component={ThankYou}/>
                         <Route path='/login' component={LoginForm}/>
                         <Route path='/logout' component={Logout}/>

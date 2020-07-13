@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import Form from "../../../Common/Form";
+import Form from "../../Common/Form";
 import Joi from "joi-browser";
-import {getCurrentDate} from '../../../Common/Utils/GetDate'
+import {getCurrentDate} from '../../Common/Utils/GetDate'
 import {Container, GridList, GridListTile} from '@material-ui/core';
 import {
     getApartment,
@@ -9,12 +9,12 @@ import {
     getCities,
     getMalfunctions,
     getMalfunctionKey, getDefaultMalfunctions, saveApartmentReview
-} from "../../../../Services/FakeAptService";
+} from "../../../Services/FakeAptService";
 
 import UploadOptionsSection from "./UploadOptionsSection";
-import Malfunctions from "../../Malfunctions";
+import Malfunctions from "../Object Model/Malfunctions";
 import UploadDocsSection from "./UploadDocsSection";
-import DatePickerInput from "../../../Common/DatePickerInput";
+import DatePickerInput from "../../Common/DatePickerInput";
 
 export default class UploadReview extends Form{
     constructor({match, history}) {

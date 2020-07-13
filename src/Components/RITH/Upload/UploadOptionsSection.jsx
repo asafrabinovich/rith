@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import MalfunctionsModal from "../../Modals/MalfunctionsModal";
+import MalfunctionsModal from "../Modals/MalfunctionsModal";
 
 const UploadOptionsSection = ({buttonText,onClick,text,itemsForModal}) =>{
     return (

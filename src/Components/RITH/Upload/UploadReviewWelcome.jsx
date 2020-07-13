@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {getApartments, getFullAddress} from "../../../../Services/FakeAptService";
-import SearchBox from "../../../Common/SearchBox";
-import ApartmentsTable from "../../ApartmentsTable";
+import {getApartments, getFullAddress} from "../../../Services/FakeAptService";
+import SearchBox from "../../Common/SearchBox";
+import ApartmentsTable from "../Object Model/ApartmentsTable";
 import { Container } from '@material-ui/core';
-import SearchBoxWithButton from "../../../Common/SearchBoxWithButton";
+import SearchBoxWithButton from "../../Common/SearchBoxWithButton";
 export default class UploadReviewWelcome extends Component {
     state ={
         apartments : [],

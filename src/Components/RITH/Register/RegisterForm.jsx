@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import Joi from 'joi-browser';
-import Form from "../Common/Form";
-import {register} from "../../Services/userService";
-import auth from "../../Services/authService";
+import Form from "../../Common/Form";
+import {register} from "../../../Services/userService";
+import auth from "../../../Services/authService";
 import {Container} from "@material-ui/core";
 
 export default class RegisterForm extends Form{
@@ -46,7 +46,7 @@ export default class RegisterForm extends Form{
         try {
             console.log(this.state.data);
             const response = await register(this.state.data);
-            // console.log("Response",response)
+            console.log("Response",response)
 
             auth.loginWithJwt(response.headers['x-auth-token']);
             window.location = '/';

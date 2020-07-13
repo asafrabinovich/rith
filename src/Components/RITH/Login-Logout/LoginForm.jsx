@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Joi from 'joi-browser';
-import Form from "../Common/Form";
-import auth from "../../Services/authService";
+import Form from "../../Common/Form";
+import auth from "../../../Services/authService";
 import {Redirect} from "react-router-dom";
 import {Container} from "@material-ui/core";
 
@@ -39,6 +39,7 @@ export default class LoginForm extends Form{
             const {state} = this.props.location;
             window.location = state ?state.from.pathname : '/';
         }catch (e) {
+            console.log("Entred")
             if(e.response && (e.response.status === 400 || e.response.status === 401) )
             {
                 const errors = {...this.state.errors};
@@ -65,7 +66,7 @@ export default class LoginForm extends Form{
     // };
 
     render() {
-        // if(auth.getCurrentUser()) return <Redirect to='/'/>;
+        if(auth.getCurrentUser()) return <Redirect to='/'/>;
         return (
             <Container className='rtl w-25 mt-5'>
                 <h1 className='text-center'>התחברות</h1>

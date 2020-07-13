@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {getApartments} from "../../Services/FakeAptService";
-import SearchBox from "../Common/SearchBox";
-import ApartmentsTable from "./ApartmentsTable";
+import {getApartments} from "../../../Services/FakeAptService";
+import SearchBox from "../../Common/SearchBox";
+import ApartmentsTable from "../Object Model/ApartmentsTable";
 
 export default class Home extends Component {
     state ={

@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import Card from "./Card";
-import {getLatestPayments} from "../../Services/FakeAptService";
+import {getLatestPayments} from "../../../Services/FakeAptService";
+import _ from 'lodash';
+import {Link} from "react-router-dom";
 
 
-export default class ReviewWidget extends Component{
+export default class ApartmentWidget extends Component{
     constructor() {
         super();
         // const user = authService.getCurrentUser();
@@ -12,28 +14,29 @@ export default class ReviewWidget extends Component{
         // }
     }
     state = {
-        title:'',
+        title:'שכ"ד אחרון שעודכן: ',
         details:'',
+        address: ''
     };
     componentDidMount() {
         this.getPageData();
     }
     getPageData = ()=>{
-        const {review} = this.props;
-        const title = review.uploaderName;
-        const livingExperience = review.listOfMalfunctions.filter(m=>m.type === 'livingExperience');
-        const details = livingExperience[0].Text;
-
-        this.setState({title,details});
+        const {apartment} = this.props;
+        const {latestRent} = getLatestPayments(apartment);
+        const title = this.state.title + latestRent + ' ש"ח';
+        const details = apartment.numberOfRooms + ' חדרים' + ' • ' + apartment.squareFit + ' מ"ר' + ' • ' + " דירה " + apartment.apartmentNumber;
+        const address = "רחוב " + apartment.street + " " + apartment.streetNumber + ", " + apartment.city;
+        this.setState({title,details,address});
     }
     render() {
-        const {review,onClick} = this.props;
-        const {title,details} = this.state;
+        const {apartment,onClick} = this.props;
+        const {title,details,address} = this.state;
         const pic = 'https://cdn.vox-cdn.com/thumbor/EmOyMCRzSUv0ULrHejUaXNa25wk=/0x0:1700x960/925x925/filters:focal(714x344:986x616):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/57514059/mario.0.jpg';
         return(
             <React.Fragment >
                 <div
-                    onClick={() => onClick(review._id)}
+                    onClick={() => onClick(apartment._id)}
                     style={{cursor:'pointer'}}
                 >
                     {/*<Link className="page-link" to={`/apartments/${apartment._id}`} >*/}
@@ -43,8 +46,7 @@ export default class ReviewWidget extends Component{
                         height ='200px'
                         title ={title}
                         details= {details}
-                        onClick = {onClick}
-                        parametersToClick = {review._id}
+                        address={address}
                     />
                 </div>
                 {/*</Link>*/}
