@@ -48,7 +48,14 @@ export default class LoginForm extends Form{
             }
         }
     };
-
+    routeToRegister = ()=>{
+        const {state} = this.props.location;
+        window.location = '/register';
+    }
+    isReroutedFromUploadReview = () =>{
+        const {state} = this.props.location;
+        return state;
+    }
     // doSubmit =  () =>{
     //     try {
     //         const {data} = this.state;
@@ -71,10 +78,12 @@ export default class LoginForm extends Form{
             <Container className='rtl w-25 mt-5'>
                 <h1 className='text-center'>התחברות</h1>
                 <h6 className='text-center'>הכנס את פרטי המשתמש שלך</h6>
-
+                {this.isReroutedFromUploadReview() && <h6 className='text-center' style={{color:'red'}}>יש להירשם כדי לעלות ביקורת לאתר</h6>}
                 <form onSubmit= {this.handleSubmit} className='mt-4' >
                     {this.renderInput('username', 'שם משתמש:')}
                     {this.renderInput('password', 'סיסמא:', 'password')}
+                    <p style={{cursor:'pointer'}} className='btn-link ml-1 mt-3' onClick={this.routeToRegister}>אין לכם חשבון? לחצו כדי להירשם</p>
+
                     <Container className='w-50'>
                         {this.renderButton('אישור')}
                     </Container>

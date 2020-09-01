@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getApartments} from "../../../Services/FakeAptService";
+import {getApartments,getApartments2} from "../../../Services/FakeAptService";
 import SearchBox from "../../Common/SearchBox";
 import ApartmentsTable from "../Object Model/ApartmentsTable";
 
@@ -8,10 +8,9 @@ export default class Home extends Component {
         apartments : [],
         searchQuery:''
     }
-    componentDidMount() {
-        // const {data:apartments} = await getApartments();
-        const apartments = getApartments();
-        this.setState({apartments});
+    async componentDidMount() {
+        const apartments = await getApartments2();
+        await this.setState({apartments});
     }
 
     getPageData = () =>{

@@ -15,6 +15,8 @@ import UploadOptionsSection from "./UploadOptionsSection";
 import Malfunctions from "../Object Model/Malfunctions";
 import UploadDocsSection from "./UploadDocsSection";
 import DatePickerInput from "../../Common/DatePickerInput";
+import {uploadFile} from "../../../Services/httpService";
+import { Rating } from '@material-ui/lab';
 
 export default class UploadReview extends Form{
     constructor({match, history}) {
@@ -34,6 +36,8 @@ export default class UploadReview extends Form{
             waterBill:'',
             electricityBill:'',
             taxProperty:'',
+            ratingStatus: 0,
+            mainPhoto:''
 
         },
         malfunctions: [],
@@ -145,15 +149,21 @@ export default class UploadReview extends Form{
             .min(0)
             .max(400000)
             .label('ארנונה'),
+        ratingStatus: Joi
+            .number()
+            .integer()
+            .min(0)
+            .max(5),
+        mainPhoto: Joi
+
 
     };
 
 
-     async populateApartment(){
+    async populateApartment(){
          try{
              const apartmentId = this.props.match.params.apartmentId;
              if(apartmentId === 'new') return;
-             // const {data : apartment} = await getApartment(apartmentId);
              const apartment = getApartment(apartmentId);
 
              if(apartment._id){
@@ -168,7 +178,7 @@ export default class UploadReview extends Form{
          }
      }
     async populateCities(){
-            const cities = getCities();
+        const cities = await getCities();
         this.setState({cities});
     }
     async populateMalfunctionsOptions(){
@@ -183,8 +193,8 @@ export default class UploadReview extends Form{
     }
 
     async componentDidMount() {
-         await this.populateApartment();
         await this.populateCities();
+        await this.populateApartment();
         await this.populateMalfunctionsOptions();
         await this.populateMalfunctions();
     };
@@ -194,7 +204,6 @@ export default class UploadReview extends Form{
         return {
             street:apartment.street,
             streetNumber: apartment.streetNumber,
-            city: apartment.city,
             apartmentNumber: apartment.apartmentNumber,
             numberOfRooms: apartment.numberOfRooms,
             floorNumber: apartment.floorNumber,
@@ -206,10 +215,10 @@ export default class UploadReview extends Form{
     handleMalfunctionChosen =  async chosenMalfunction =>{
         const allMalfunctions = this.state.malfunctions;
         const malfunction = {name:chosenMalfunction.name,text:'',key: chosenMalfunction.key, files:[], time: Date.now()}
-        const malfunctions =[malfunction,...allMalfunctions];
-        await this.setState({malfunctions});
+        const malfunctions =[...allMalfunctions,malfunction];
         this.addToSchema(chosenMalfunction.key);
         this.removeFromOptions(chosenMalfunction);
+        await this.setState({malfunctions});
     };
     addToSchema =(name)=>{
         let message = 'אנא מלאו שדה זה או לחצו על "הסר"';
@@ -260,14 +269,19 @@ export default class UploadReview extends Form{
     handleImageRemoved = async (inputFiles, inputKey) =>{
         this.handleImageSelected(inputFiles, inputKey);
     }
-    handleLeaseSelected = file =>{
-        const leaseFile = file;
-        this.setState({leaseFile})
-    };
-    handleIdSelected= file=>{
-        const idFile = file;
+    handleIdSelected= async file=>{
+        const idFile = await uploadFile(file);
         this.setState({idFile})
     };
+    handleLeaseSelected = async file =>{
+        const leaseFile = await uploadFile(file);;
+        this.setState({leaseFile})
+    };
+    handleScoreSelected =  (ratingStatus) =>{
+        const data = {...this.state.data};
+        data["ratingStatus"]= parseInt(ratingStatus);
+        this.setState({data});
+    }
     handleMalfunctionChange = async ({currentTarget : input},text)=>{
         this.handleChange({currentTarget : input});
         const malfunctions = [...this.state.malfunctions];
@@ -277,12 +291,45 @@ export default class UploadReview extends Form{
         malfunctions[index] = {...malfunctionToUpdate};
         await this.setState({malfunctions});
     }
+    validateSubmission = ()=>{
+        // console.log("Uploaded Docs: ", this.validateUploadedDocs());
+        // console.log("Chosen City: ", this.validateChosenCity());
+        // console.log("Errors: ", this.state.errors);
+
+        return (this.validateUploadedDocs())
+    }
     validateUploadedDocs = ()=>{
         const {idFile,leaseFile} =this.state;
-        return (idFile && leaseFile) ? false:true;
+        return (idFile && leaseFile) ? true : false;
+    }
+    validateChosenCity =() =>{
+        const {city} = this.state.data;
+        console.log("Chsen City: ", city)
+        let res = (city.key == "Default")?  false :  true;
+        return res
+    }
+    setMainPhoto = async()=>{
+        const {malfunctions} = this.state;
+        console.log("state photo:",this.state.mainPhoto)
+
+        let mainPhoto;
+        malfunctions.forEach(malfunction => {
+            if(!this.state.mainPhoto && malfunction.files.length > 0) {
+                    mainPhoto = malfunction.files[0].fileName;
+                }
+            }
+        );
+        const data = {...this.state.data};
+        console.log("my photo:",mainPhoto)
+
+        if(mainPhoto){
+            data["mainPhoto"]= mainPhoto;
+            this.setState({data});
+        }
+        console.log("statusL ", this.state)
     }
     buildApartmentJson =  ()=>{
-        const {street,streetNumber,city,apartmentNumber, floorNumber, squareFit, ownerName, rent, waterBill, electricityBill, taxProperty} = this.state.data;
+        const {street,streetNumber,city,apartmentNumber, floorNumber, squareFit, ownerName, rent, waterBill, electricityBill, taxProperty,numberOfRooms,ratingStatus,mainPhoto} = this.state.data;
         const {malfunctions,leaseFile,idFile} = this.state;
         const json ={
             "createDate": getCurrentDate(),
@@ -293,37 +340,45 @@ export default class UploadReview extends Form{
             "lastElectrictyBill": electricityBill,
             "propertyTax": taxProperty,
             "listOfMalfunctions": malfunctions,
-            "ratingStatus": 5,
+            "ratingStatus": ratingStatus,
             "status":"pending",
             "contract": leaseFile,
             "identificationCard":idFile,
             "street": street,
-            "streetNumber": streetNumber,
+            "streetNumber": parseInt(streetNumber),
             "city": city,
-            "apartmentNumber": apartmentNumber,
-            "floorNumber": floorNumber,
-            "squareFit": squareFit,
-            "ownerName": ownerName
+            "apartmentNumber": parseInt(apartmentNumber),
+            "floorNumber": parseInt(floorNumber),
+            "squareFit": parseInt(squareFit),
+            "ownerName": ownerName,
+            "numberOfRooms":parseInt(numberOfRooms),
+            "mainPhoto":mainPhoto,
+
         }
         return json;
     }
 
     doSubmit = async () =>{
+        await this.setMainPhoto();
         const apartmentJson = this.buildApartmentJson();
         await saveApartmentReview(apartmentJson);
-        //
-        // this.props.history.push('/thank-you');
+        this.props.history.push('/thank-you');
     };
+
+
 
     render(){
         const {malfunctionsOptions,malfunctions,data,errors} = this.state;
         return (
             <React.Fragment>
                 <Container className= ' rtl w-75'>
-                    <Container>
+                    <Container className='mb-3'>
                         <h1 className='text-center'>העלת ביקורת</h1>
                         <h2 className='mt-3 '>פרטים "יבשים"</h2>
                         <h6 className='mb-4 '>אנא מלאו את השדות הבאים:</h6>
+                        <p>דירוג כללי:</p>
+                        <Rating  name="simple-controlled" defaultValue={0} size="large" onChange={(e) => this.handleScoreSelected(e.target.value)} />
+
                     </Container>
 
                     <form onSubmit= {this.handleSubmit} >
@@ -376,7 +431,8 @@ export default class UploadReview extends Form{
                             />
                         </Container>
                         <Container>
-                            {this.renderButton('סיים ושלח ביקורת', this.validateUploadedDocs)}
+                            {this.renderButton('סיים ושלח ביקורת', this.validateSubmission)}
+                            <button onClick={this.setMainPhoto}> בחר</button>
                         </Container>
                     </form>
                     <Container className=' h-auto mt-3 '>

@@ -1,6 +1,8 @@
 import _ from "lodash";
 import {apiUrl} from "../config";
 import httpService from "./httpService";
+import {getJwt} from "./authService";
+import axios from "axios";
 const apiEndpoint = apiUrl + "/apartments";
 
 const apartmentsAsJson = [
@@ -189,10 +191,20 @@ const apartmentsAsJson = [
 // const apartments = JSON.parse(this.apartmentsAsJson);
 
 export function getApartments() {
+
     return apartmentsAsJson;
 }
 
 export function getApartment(id) {
+    return apartmentsAsJson.find(m => m._id === id);
+}
+
+export async function getApartments2() {
+    const res = await httpService.get(apiEndpoint);
+    return res.data
+}
+
+export function getApartment2(id) {
     return apartmentsAsJson.find(m => m._id === id);
 }
 export function getFullAddress({street, streetNumber,city,apartmentNumber}) {
@@ -207,8 +219,15 @@ export function getLatestPayments(apartment) {
     return {latestRent: latestReview.lastRent, latestWaterBill: latestReview.lastWaterBill, latestElectricityBill: latestReview.lastElectricityBill, latestPropertyTax: latestReview.lastPropertyTax};
 }
 
-export function getCities() {
-    return [{name: 'תל אביב'},{name: 'חיפה'},{name: 'ראשון'},{name: 'מזכרת בתיה'}]
+export async function getCities() {
+    let res;
+    try {
+         res = await httpService.get(apiUrl+ '/cities');
+        return res.data
+    }
+    catch (e) {
+        
+    }
 }
 
 export function getMalfunctions() {
@@ -223,13 +242,13 @@ export function getMalfunctionKey(name){
 export function getDefaultMalfunctions() {
     const malfunctions =[
         {
-        name:'livingExperience',
+        name:'חווית מגורים',
         text:'',
         key: 'livingExperience',
         files:[]
         },
         {
-            name:'recommendations',
+            name:'המלצות',
             text:'',
             key: 'recommendations',
             files:[]
@@ -252,18 +271,77 @@ export function getMalfunctionProps(key) {
 
     }
 }
-function buildApartmentIdUrl(apartmentId) {
-    const result = apiEndpoint + '/' + apartmentId;
-    return result;
-}
-export async function saveApartmentReview(apartment) {
-    console.log("apt",apartment);
+// function buildApartmentIdUrl(apartmentId) {
+//     const result = apiEndpoint + '/' + apartmentId;
+//     return result;
+// }
+export async function  saveApartmentReview(apartment) {
+    console.log("Apt:" ,apartment);
+    let dataToUpload = apartment;;
+    let requestURL = apiUrl+ "/reviews";
+    let res;
+    let config = {
+        headers: {
+            'Authorization': 'Bearer ' + getJwt()
+        }
+    }
     if(apartment._id){
         const body = {...apartment};
         delete body._id;
-        await httpService.put(buildApartmentIdUrl(apartment._id), body )
+        dataToUpload = body;
+        requestURL += "/" + apartment._id;
     }
+    console.log("URL:", requestURL);
+    const dataToUploadBySchema = getDataToUploadBySchema(dataToUpload);
+    console.log("After Schema:", dataToUploadBySchema);
 
-     await httpService.post(apiEndpoint , apartment)
+    res = await httpService.post(requestURL , dataToUploadBySchema,config);
+    console.log("Result: ",res);
 }
 
+function getDataToUploadBySchema(dataToUploadBySchema){
+    return{
+        "createDate": dataToUploadBySchema.createDate,
+        "rentalPeriod": dataToUploadBySchema.rentalPeriod,
+        "lastRent": dataToUploadBySchema.lastRent,
+        "lastWaterBill":dataToUploadBySchema.lastWaterBill,
+        "lastElectricityBill":dataToUploadBySchema.lastElectrictyBill,
+        "propertyTax":dataToUploadBySchema.propertyTax,
+        "contract":dataToUploadBySchema.contract,
+        "identificationCard":dataToUploadBySchema.identificationCard,
+        "street":dataToUploadBySchema.street,
+        "streetNumber":dataToUploadBySchema.streetNumber,
+        "city":dataToUploadBySchema.city,
+        "apartmentNumber":dataToUploadBySchema.apartmentNumber,
+        "floorNumber":dataToUploadBySchema.floorNumber,
+        "squareFit":dataToUploadBySchema.squareFit,
+        "ownerName":dataToUploadBySchema.ownerName,
+        "numberOfRooms":dataToUploadBySchema.numberOfRooms,
+        "listOfMalfunctions":getListOfMalfunctions(dataToUploadBySchema.listOfMalfunctions),
+        "ratingStatus": dataToUploadBySchema.ratingStatus,
+        "status": dataToUploadBySchema.status,
+        "mainPhoto": dataToUploadBySchema.mainPhoto
+
+    }
+
+}
+
+function getListOfMalfunctions(listOfMalfunctions) {
+    const body = {...listOfMalfunctions};
+    _.forEach(body,mal => _.forEach(mal.files, file => delete file.fileURL));
+    let res = [];
+    _.forEach(body,mal =>{
+        let files = [];
+        res = [...res,{
+         "text":mal.text,
+         "key":mal.key,
+         "name": mal.name,
+         "files":_.forEach(mal.files, file => {
+             files = [...files,{
+                 "fileName":file.name
+             }]
+         })
+     }]
+    })
+    return res;
+}

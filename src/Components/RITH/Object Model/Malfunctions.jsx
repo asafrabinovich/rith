@@ -6,10 +6,10 @@ import _ from 'lodash';
 export default class Malfunctions extends Component {
     render() {
         const {malfunctions,data,errors,onChange,onRemove,notifyWhenImageSelected,notifyWhenImageRemoved, viewOnly = false} = this.props;
-        const allMalfunctions = _.orderBy(malfunctions,'time','desc')
+        // const allMalfunctions = _.orderBy(malfunctions,'time','desc')
         return (
             <React.Fragment>
-                {allMalfunctions
+                {malfunctions
                     .map(malfunction => {
                         return (
                             <Container className='mt-4'>

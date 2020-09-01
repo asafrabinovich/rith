@@ -11,7 +11,7 @@ export default class ImagesPreviewer extends Component{ //continue
                 {images.map(image =>{
                     return <GridListTile className='h-auto ' >
                         <div className="container" onMouseEnter=''>
-                            <img src={image.url} className='image' />
+                            <img src={image.fileURL} className='image' />
                             <button className="btn btn-sm" onClick={()=>{onRemove(image)}}>x</button>
                         </div>
                     </GridListTile>

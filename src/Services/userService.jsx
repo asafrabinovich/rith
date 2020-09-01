@@ -12,10 +12,10 @@ const apiEndpoint = apiUrl + "/register";
 // }
 export function register(user) {
     return httpService.post(apiEndpoint, {
-        "Email": user.username,
-        "Password" : user.password,
-        "First Name" :user.name,
-        "Last Name" :user.name
+        "email": user.username,
+        "password" : user.password,
+        "firstName" :user.name,
+        "lastName" :user.name
     })
 }
 

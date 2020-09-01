@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Joi from 'joi-browser';
-// import auth from "../../Services/authService";
 import { Container } from "@material-ui/core";
 import Form from "../../Common/Form";
+import httpService from "../../../Services/httpService";
 
 export default class LoginForm extends Form {
     state = {
@@ -49,24 +49,20 @@ export default class LoginForm extends Form {
             }),
     };
 
-    doSubmit = () => {
-        alert("Sent");
-        // try {
-        //     const { data } = this.state;
-        //     auth.fakeLogin(data.username, data.password);
-        //     const { state } = this.props.location;
-        //     window.location = state ? state.from.pathname : '/';
-        // } catch (e) {
-        //     if (e.response && e.response.status === 400) {
-        //         const errors = { ...this.state.errors };
-        //         errors.username = e.response.data;
-        //         this.setState({ errors });
-        //     }
-        // }
+    doSubmit = async () => {
+        const { data } = this.state;
+        try {
+            await httpService.sendContactForm(data);
+            window.location = '/contactformthankyou';
+        } catch (e) {
+            if (e.response && e.response.status === 400) {
+                const errors = { ...this.state.errors };
+                errors.username = e.response.data;
+                this.setState({ errors });
+            }
+        }
     };
-
     render() {
-        // if(auth.getCurrentUser()) return <Redirect to='/'/>;
         return (
             <Container className='rtl w-25 mt-5' style={{marginBottom:'50px'}}>
                 <h1 className='text-center'>צור קשר</h1>

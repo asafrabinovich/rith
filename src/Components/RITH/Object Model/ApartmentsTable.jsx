@@ -5,13 +5,7 @@ import {GridListTile} from "@material-ui/core";
 
 
 export default class ApartmentsTable extends Component{
-    constructor() {
-        super();
-        // const user = authService.getCurrentUser();
-        // if(user && user.isAdmin) {
-        //     this.columns.push(this.deleteColumn)
-        // }
-    }
+
     renderRows = (apartments) =>{
       let itemsPerRow = 3;
 

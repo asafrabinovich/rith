@@ -18,6 +18,7 @@ import UploadReview from "./Components/RITH/Upload/UploadReview";
 import ThankYou from "./Components/RITH/Upload/ThankYou";
 import Review from "./Components/RITH/Object Model/Review";
 import Footer from "./Components/Common/Footer";
+import ContactFormThankYou from "./Components/RITH/Contact/ContactFormThankYou";
 
 
 export default class App extends Component{
@@ -47,6 +48,7 @@ export default class App extends Component{
                         <Route path='/register' component={RegisterForm}/>
                         <Route path='/about' component={AboutUs}/>
                         <Route path='/contact' component={ContactForm}/>
+                        <Route path='/contactformthankyou' component={ContactFormThankYou}/>
                         <Route path='/not-found' component={NotFound}/>
                         <Redirect from='/' exact to='/home'/>
                         <Redirect  to='/not-found'/>

@@ -62,14 +62,22 @@ export default class Form extends Component{
     //     </button>
     // }
 
-    renderButton = (label,addToValidation = ()=> {return false}) => {
+    renderButton = (label,addToValidation = ()=> {return true}) => {
         return <button
-            disabled={this.validate() || addToValidation()}
+            disabled={this.validate() || !addToValidation()}
             className="btn btn-primary float-left"
         >
             {label}
         </button>
     }
+    // renderButton = (label,addToValidation = ()=> {return false}) => {
+    //     return <button
+    //         disabled={this.validate() || addToValidation()}
+    //         className="btn btn-primary float-left"
+    //     >
+    //         {label}
+    //     </button>
+    // }
     renderInput = (name, label,type = 'text') =>{
         const {data, errors} = this.state;
         return <Input

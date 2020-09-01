@@ -4,7 +4,7 @@ import FileUploader from "../../Common/FileUploader";
 import {Container} from "@material-ui/core";
 import {getMalfunctionProps} from "../../../Services/FakeAptService";
 import ImagesPreviewer from "../../Common/ImagesPreviewer";
-import {fakeUploadImage} from "../../../Services/httpService";
+import {uploadImage, fakeUploadImage} from "../../../Services/httpService";
 import TextArea from "../../Common/TextArea";
 import ImagesGallery from "../../Common/ImagesGallery";
 
@@ -24,7 +24,7 @@ export default class Malfunction extends Component{
             return <TextAreaInput
             type = {type}
             name= {name}
-            value={data[name]}
+            // value={data[name]}
             error={errors[name]}
             rows = {numberOfRows}
             onChange={event => {
@@ -35,7 +35,6 @@ export default class Malfunction extends Component{
             onRemove={onRemove}
         />
     };
-
     renderTextArea = (name,numberOfRows='2',headline,subHeadline,text,type = 'text') =>{
 
         return <TextArea
@@ -57,50 +56,48 @@ export default class Malfunction extends Component{
             name= {name}
             headline = 'הוסף תמונה'
             onChange={this.handleImageSelected}
+
         />
     };
     renderImagesPreviewer = () =>{
-        const {images} = this.state;
-        return <ImagesPreviewer images ={images} onRemove={this.handleImageRemove}/>
+        const {files} = this.state;
+        return <ImagesPreviewer images ={files} onRemove={this.handleImageRemove}/>
     };
     handleImageSelected =  async event =>{
         const {files} = this.state;
         const {notifyWhenImageSelected,name} = this.props;
+        const selectedFile = event.target.files[0];
 
-        if(event.target.files[0]){
+        if(selectedFile){
+            const uploadedFile = await uploadImage(selectedFile);
             if(!files) {
-                await this.setState({files: [event.target.files[0]]});
-                this.refreshImages();
+                await this.setState({files: [{file:uploadedFile}]});
             }
             else{
-                const files = [...this.state.files, event.target.files[0]]
+                const files = [...this.state.files, uploadedFile];
                 await this.setState({files});
-                this.refreshImages();
-
             }
+
         }
         notifyWhenImageSelected(this.state.files,name);
-        console.log('Added:',this.state.images);
-
+    }
+    refreshImages = async =>{
+        const {files} = this.state;
+        let images = [];
+        files.forEach(file=> images = [...images,{name:file.fileName,url:file.fileURL, key:file.filename}]);
+        this.setState({images});
     }
     handleImageRemove = async (fileToRemove) =>{
         const {files:allFiles} = this.state;
         const {name,notifyWhenImageRemoved} = this.props;
-        const files = allFiles.filter(file => file.name !== fileToRemove.name);
+        const files = allFiles.filter(file => file.fileName !== fileToRemove.fileName);
         await this.setState({files});
         this.refreshImages();
-
         notifyWhenImageRemoved(this.state.files,name);
-
     }
 
 
-    refreshImages = ()=>{
-        const {files} = this.state;
-        const images = fakeUploadImage(files);
-        this.setState({images});
 
-    }
     render() {
         const {name, onRemove,onChange,type,text, viewOnly = false, images = null} = this.props;
         const {headline,subHeadline} = getMalfunctionProps(name);

@@ -9,7 +9,7 @@ const TextAreaInput = ({name, label, error,headline,subHeadline,onRemove, ...res
                     onRemove &&
                     <p onClick={()=>{
                         onRemove(name)
-                    }} style={{cursor:'pointer'}} className='btn-link ml-1 mt-3 stretched-link'>הסר</p>
+                    }} style={{cursor:'pointer'}} className='btn-link ml-1 mt-3 '>הסר</p>
                 }
             </div>
 
