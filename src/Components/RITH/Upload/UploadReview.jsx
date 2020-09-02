@@ -377,7 +377,7 @@ export default class UploadReview extends Form{
                         <h2 className='mt-3 '>פרטים "יבשים"</h2>
                         <h6 className='mb-4 '>אנא מלאו את השדות הבאים:</h6>
                         <p>דירוג כללי:</p>
-                        <Rating  name="simple-controlled" defaultValue={0} size="large" onChange={(e) => this.handleScoreSelected(e.target.value)} />
+                        <Rating dir="ltr" name="simple-controlled" defaultValue={0} size="large" onChange={(e) => this.handleScoreSelected(e.target.value)} />
 
                     </Container>
 
