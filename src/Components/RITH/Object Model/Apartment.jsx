@@ -38,13 +38,13 @@ export default class Apartment extends Form{
     checkIfApartmentHasMoreThanOneReview = async () =>{
         const apartmentId = this.props.match.params.apartmentId;
         await this.setState({apartmentId});
-        const apartment = getApartment(apartmentId);
-        if(apartment.listOfReviews.length <=1){
+        const apartment = await getApartment(apartmentId);
+
+        if (apartment.reviews.length <= 1) {
             this.props.history.push(`/apartments/${apartment._id}/reviews/${apartment.listOfReviews[0]._id}`);
-        }
-        else{
-           await this.setState({data: this.mapToViewModel(apartment)});
-           await this.setState({reviews:apartment.listOfReviews })
+        } else {
+            await this.setState({data: this.mapToViewModel(apartment)});
+            await this.setState({reviews: apartment.reviews})
             // this.populateReviews(apartment);
 
         }

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Card from "./Card";
 import {getLatestPayments} from "../../../Services/FakeAptService";
+import httpService from "../../../Services/httpService";
 
 
 export default class ReviewWidget extends Component{
@@ -14,22 +15,23 @@ export default class ReviewWidget extends Component{
     state = {
         title:'',
         details:'',
+        mainPhoto: ''
     };
     componentDidMount() {
         this.getPageData();
     }
-    getPageData = ()=>{
+    getPageData = ()=> {
         const {review} = this.props;
-        const title = review.uploaderName;
-        const livingExperience = review.listOfMalfunctions.filter(m=>m.type === 'livingExperience');
-        const details = livingExperience[0].Text;
-
-        this.setState({title,details});
+        const title = "review.uploaderName";
+        let livingExperience = review.listOfMalfunctions.filter(m => m.key === 'livingExperience');
+        const details = livingExperience[0].text.slice(0, 80) + "...";
+        const mainPhoto = httpService.getImage(review.mainPhoto);
+        console.log("Review ID: ", review)//Continue 
+        this.setState({title, details, mainPhoto});
     }
     render() {
-        const {review,onClick} = this.props;
-        const {title,details} = this.state;
-        const pic = 'https://cdn.vox-cdn.com/thumbor/EmOyMCRzSUv0ULrHejUaXNa25wk=/0x0:1700x960/925x925/filters:focal(714x344:986x616):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/57514059/mario.0.jpg';
+        const {review, onClick} = this.props;
+        const {title, details, mainPhoto} = this.state;
         return(
             <React.Fragment >
                 <div
@@ -38,8 +40,8 @@ export default class ReviewWidget extends Component{
                 >
                     {/*<Link className="page-link" to={`/apartments/${apartment._id}`} >*/}
                     <Card
-                        pic = {pic}
-                        width ='200px'
+                        pic={mainPhoto}
+                        width='200px'
                         height ='200px'
                         title ={title}
                         details= {details}

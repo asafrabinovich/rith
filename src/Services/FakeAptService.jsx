@@ -195,8 +195,10 @@ export function getApartments() {
     return apartmentsAsJson;
 }
 
-export function getApartment(id) {
-    return apartmentsAsJson.find(m => m._id === id);
+export async function getApartment(id) {
+    const apartments = await getApartments2();
+    const res = apartments.find(m => m._id === id);
+    return res
 }
 
 export async function getApartments2() {
@@ -213,10 +215,16 @@ export function getFullAddress({street, streetNumber,city,apartmentNumber}) {
 }
 
 export function getLatestPayments(apartment) {
-    let reviews = {...apartment.listOfReviews};
-    reviews= _.orderBy(reviews, "_id", 'desc');
+    console.log("Apartment: ", apartment)
+    let reviews = {...apartment.reviews};
+    reviews = _.orderBy(reviews, "_id", 'desc');
     const latestReview = {...reviews[0]};
-    return {latestRent: latestReview.lastRent, latestWaterBill: latestReview.lastWaterBill, latestElectricityBill: latestReview.lastElectricityBill, latestPropertyTax: latestReview.lastPropertyTax};
+    return {
+        latestRent: latestReview.lastRent,
+        latestWaterBill: latestReview.lastWaterBill,
+        latestElectricityBill: latestReview.lastElectricityBill,
+        latestPropertyTax: latestReview.propertyTax
+    };
 }
 
 export async function getCities() {

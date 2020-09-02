@@ -8,7 +8,7 @@ const Card = ({pic, width ='auto', height ='auto', title, details, address = nul
                 <h5 className="card-title ">{title}</h5>
                 <p className="card-text">{details}</p>
                 {address && <p className="card-text m-0">{address}</p>}
-                {onClick && <p className="text-info m-0" onClick={() =>onClick(parametersToClick) }>המשך לקרוא...</p>}
+                {onClick && <p className="text-info m-0" onClick={() => onClick(parametersToClick)}>המשך לקרוא</p>}
 
             </div>
         </div>
