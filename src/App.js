@@ -19,7 +19,7 @@ import ThankYou from "./Components/RITH/Upload/ThankYou";
 import Review from "./Components/RITH/Object Model/Review";
 import Footer from "./Components/Common/Footer";
 import ContactFormThankYou from "./Components/RITH/Contact/ContactFormThankYou";
-
+import PrivateArea from "./Components/RITH/Private Area/PrivateArea"
 
 export default class App extends Component{
     state ={}
@@ -45,6 +45,7 @@ export default class App extends Component{
                         <Route path='/thank-you' component={ThankYou}/>
                         <Route path='/login' component={LoginForm}/>
                         <Route path='/logout' component={Logout}/>
+                        <ProtectedRoute path='/private-area' component={PrivateArea}/>
                         <Route path='/register' component={RegisterForm}/>
                         <Route path='/about' component={AboutUs}/>
                         <Route path='/contact' component={ContactForm}/>

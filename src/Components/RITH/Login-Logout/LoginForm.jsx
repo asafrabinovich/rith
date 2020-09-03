@@ -73,7 +73,7 @@ export default class LoginForm extends Form{
     // };
 
     render() {
-        if(auth.getCurrentUser()) return <Redirect to='/'/>;
+        if(auth.getCurrentUser()) return <Redirect to= '/'/>;
         return (
             <Container className='rtl w-25 mt-5'>
                 <h1 className='text-center'>התחברות</h1>

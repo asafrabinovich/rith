@@ -45,6 +45,9 @@ export default class NavBar extends Component{
                                     <NavLink className="nav-link" to="/profile">{this.props.user.name}</NavLink>
                                 </li>
                                 <li className="nav-item">
+                                    <NavLink className="nav-link" to="/private-area">אזור אישי</NavLink>
+                                </li>
+                                <li className="nav-item">
                                     <NavLink className="nav-link" to="/logout">התנתק</NavLink>
                                 </li>
                             </React.Fragment>

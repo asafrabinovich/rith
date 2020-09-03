@@ -1,5 +1,7 @@
 import httpService from "./httpService";
-import {apiUrl} from "../config.json"
+import {apiUrl} from "../config.json";
+import {getJwt} from "./authService";
+
 
 const apiEndpoint = apiUrl + "/register";
 
@@ -27,3 +29,26 @@ export function register(user) {
 //         "lastName" :user.name
 //     })
 // }
+
+export function getUserDetails() {
+    let config = {
+        headers: {
+            'Authorization': 'Bearer ' + getJwt()
+        }
+    }
+
+    const UserDetails = httpService.get(apiUrl + "/getUserDetails",config);
+    console.log(UserDetails);
+    return UserDetails;
+}
+export function getUserReviews() {
+    let config = {
+        headers: {
+            'Authorization': 'Bearer ' + getJwt()
+        }
+    }
+
+    const UserReviews = httpService.get(apiUrl + "/reviews",config);
+    console.log(UserReviews);
+    return UserReviews;
+}

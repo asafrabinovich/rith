@@ -291,6 +291,14 @@ export default class UploadReview extends Form{
         malfunctions[index] = {...malfunctionToUpdate};
         await this.setState({malfunctions});
     }
+    handleSubmit =(data,schema) => {
+        console.log("test");
+            const options = {
+                abortEarly: false
+            };
+            const result = Joi.validate(data, schema, options);
+            // result.error === null -> valid
+    }
     validateSubmission = ()=>{
         // console.log("Uploaded Docs: ", this.validateUploadedDocs());
         // console.log("Chosen City: ", this.validateChosenCity());
