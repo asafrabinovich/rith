@@ -44,10 +44,15 @@ export default class PrivateArea extends Form {
     }
 
     handleEditDetailsClicked = async () => {
-        const affirmation = await editUserDetails();
         let state = {...this.state};
         state.isEditDetailsDisabled = !state.isEditDetailsDisabled;
-        state.editDetailsText = state.editDetailsText === 'שמור' ? "ערוך פרטים" : 'שמור';
+        if(state.editDetailsText === 'שמור'){
+            state.editDetailsText = 'ערוך פרטים'
+            const affirmation = await editUserDetails();
+        }
+        else{
+            state.editDetailsText = 'שמור'
+        }
         this.setState({isEditDetailsDisabled: state.isEditDetailsDisabled, editDetailsText: state.editDetailsText});
     }
     nameChangedHander= (event) => {

@@ -47,10 +47,13 @@ export function editUserDetails(name, email) {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
-    const editDetailsAffirmation = httpService.get(apiUrl + "/editDetails",config, {
-        "name" : name,
-        "email": email
-    });
+    const editDetailsAffirmation = httpService.get(
+        apiUrl + "/editDetails",config, {
+        'email': email,
+        'password': "12345",
+        'firstName': name,
+        'lastName': name
+    })
     console.log(editDetailsAffirmation);
     return editDetailsAffirmation;
 }
