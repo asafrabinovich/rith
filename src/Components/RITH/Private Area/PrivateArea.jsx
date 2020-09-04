@@ -11,6 +11,7 @@ export default class PrivateArea extends Form {
         reviews: [],
         errors: {},
         isEditDetailsDisabled: true,
+        isPasswordChange: false,
         editDetailsText: "ערוך פרטים"
     }
 
@@ -55,6 +56,13 @@ export default class PrivateArea extends Form {
         }
         this.setState({isEditDetailsDisabled: state.isEditDetailsDisabled, editDetailsText: state.editDetailsText});
     }
+
+    changePasswordClickedHandler = () => {
+        let state = {...this.state};
+        state.isPasswordChange = !state.isPasswordChange;
+        this.setState({isPasswordChange:state.isPasswordChange})
+    }
+    
     nameChangedHander= (event) => {
         let data = {...this.state.data};
         data.name = event.target.value;
@@ -66,6 +74,30 @@ export default class PrivateArea extends Form {
         this.setState({data:data});
     }
     render() {
+        let section = 
+          <Container className=' w-75'>
+            <h3> פרטים אישיים:</h3>
+            <Input name="name" label="שם:" value={this.state.data.name} disabled={this.state.isEditDetailsDisabled} onChange={this.nameChangedHander}/>
+            <Input name="email" label="מייל:" value={this.state.data.email} disabled={this.state.isEditDetailsDisabled} onChange={this.emailChangedHander} />
+            <button onClick={this.handleEditDetailsClicked}
+                    className='btn btn-primary'>{this.state.editDetailsText}</button>
+            <button onClick={this.changePasswordClickedHandler}
+            className='btn btn-secondary'>שינוי סיסמא</button>
+        </Container>
+        if(this.state.isPasswordChange){
+            section = 
+            <Container className=' w-75'>
+            <h3> שינוי סיסמא:</h3>
+            <Input name="password" label="סיסמא ישנה:" value=""/>
+            <Input name="password" label="סיסמא חדשה:" value=""/>
+            <Input name="password" label="סיסמא חדשה:" value=""/>
+            <button onClick={this.handleEditDetailsClicked}
+                    className='btn btn-primary'>אישור</button>
+            <button onClick={this.changePasswordClickedHandler}
+            className='btn btn-secondary'>חזרה</button>
+        </Container>
+        }
+
         return (
             <React.Fragment>
                 <div className='text-center rtl'>
@@ -73,14 +105,7 @@ export default class PrivateArea extends Form {
                     <Container className=' rtl w-75'>
                         <GridList cols={2}>
                             <GridListTile className='h-auto '>
-                                <Container className=' w-75'>
-                                    <h3> פרטים אישיים:</h3>
-                                    <Input name="name" label="שם:" value={this.state.data.name} disabled={this.state.isEditDetailsDisabled} onChange={this.nameChangedHander}/>
-                                    <Input name="email" label="מייל:" value={this.state.data.email} disabled={this.state.isEditDetailsDisabled} onChange={this.emailChangedHander} />
-                                    <button onClick={this.handleEditDetailsClicked}
-                                            className='btn btn-primary'>{this.state.editDetailsText}</button>
-                                    <button className='btn btn-secondary'>שינוי סיסמא</button>
-                                </Container>
+                                {section}
                             </GridListTile>
                         </GridList>
                     </Container>
