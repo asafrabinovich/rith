@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 // import DatePickerInput from "../Utils/DatePickerInput";
 import { Container } from "@material-ui/core";
-// import Avatar, { ConfigProvider } from 'react-avatar';
-// import yarinImg from '../../Resources/Images/Team/yarin.png';
-// import eilonImg from '../../Resources/Images/Team/eilon.png';
-// import assafImg from '../../Resources/Images/Team/assaf.png';
-// import itamarImg from '../../Resources/Images/Team/itamar.png';
+ import Avatar, { ConfigProvider } from 'react-avatar';
+ import yarinImg from '../../../Resources/Images/Team/Yarin.jpg';
+ import eilonImg from '../../../Resources/Images/Team/Eilon.jpg';
+ import assafImg from '../../../Resources/Images/Team/Assaf.jpg';
+ import itamarImg from '../../../Resources/Images/Team/Itamar.jpg';
 
 
 
@@ -24,15 +24,15 @@ const AboutUs = () => {
                 </p>
                 <h1> איך זה עובד?</h1>
                 <p> באתר שלנו תמצאו מגוון ביקורות על דירות להשכרה ברחבי הארץ
-                    באפשרותך לחפש דירה בעמוד החיפוש ולראות ביקורות מדיירים קודמים ואף להוסיף ביקורת על דירות בהן התגוררת</p>
+                    באפשרותך לחפש דירה בעמוד החיפוש ולראות ביקורות מדיירים קודמים ואף להוסיף ביקורת על דירות בהן התגוררת.</p>
                 <h1> מי אנחנו? </h1>
                 <p> ארבעה סטודנטים מאקדמית ת"א המתגוררים במרכז ומכירים מקרוב את בעיית השכרת הדירה.</p>
             </div>
             <div className='text-center'>
-                {/*<Avatar name="Yarin" round={true} src={yarinImg} />*/}
-                {/*<Avatar name="Assaf" round={true} src={assafImg}/>*/}
-                {/*<Avatar name="Eilon" round={true} src={eilonImg}/>*/}
-                {/*<Avatar name="Itamar" round={true} src={itamarImg}/>*/}
+                {<Avatar name="Yarin" round={true} src={yarinImg} />}
+                {<Avatar name="Assaf" round={true} src={assafImg}/>}
+                {<Avatar name="Eilon" round={true} src={eilonImg}/>}
+                {<Avatar name="Itamar" round={true} src={itamarImg}/>}
             </div>
         </Container>
 
