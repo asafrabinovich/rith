@@ -36,18 +36,31 @@ export function getUserDetails() {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
-
     const UserDetails = httpService.get(apiUrl + "/getUserDetails",config);
     console.log(UserDetails);
     return UserDetails;
 }
+
+export function editUserDetails(name, email) {
+    let config = {
+        headers: {
+            'Authorization': 'Bearer ' + getJwt()
+        }
+    }
+    const editDetailsAffirmation = httpService.get(apiUrl + "/editDetails",config, {
+        "name" : name,
+        "email": email
+    });
+    console.log(editDetailsAffirmation);
+    return editDetailsAffirmation;
+}
+
 export function getUserReviews() {
     let config = {
         headers: {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
-
     const UserReviews = httpService.get(apiUrl + "/reviews",config);
     console.log(UserReviews);
     return UserReviews;

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {getUserDetails, getUserReviews} from "../../../Services/userService"
+import {getUserDetails, getUserReviews,editUserDetails} from "../../../Services/userService"
 import Form from "../../Common/Form";
+import Input from "../../Common/Input";
 import Joi from "joi-browser";
 import {Container, GridList, GridListTile} from '@material-ui/core';
 
@@ -43,13 +44,22 @@ export default class PrivateArea extends Form {
     }
 
     handleEditDetailsClicked = async () => {
+        const affirmation = await editUserDetails();
         let state = {...this.state};
         state.isEditDetailsDisabled = !state.isEditDetailsDisabled;
         state.editDetailsText = state.editDetailsText === 'שמור' ? "ערוך פרטים" : 'שמור';
         this.setState({isEditDetailsDisabled: state.isEditDetailsDisabled, editDetailsText: state.editDetailsText});
-
     }
-
+    nameChangedHander= (event) => {
+        let data = {...this.state.data};
+        data.name = event.target.value;
+        this.setState({data:data});
+    }
+    emailChangedHander= (event) => {
+        let data = {...this.state.data};
+        data.email = event.target.value;
+        this.setState({data:data});
+    }
     render() {
         return (
             <React.Fragment>
@@ -60,8 +70,8 @@ export default class PrivateArea extends Form {
                             <GridListTile className='h-auto '>
                                 <Container className=' w-75'>
                                     <h3> פרטים אישיים:</h3>
-                                    {this.renderInput('name', 'שם:', 'text', this.state.isEditDetailsDisabled)}
-                                    {this.renderInput('email', 'כתובת אימייל', 'text', this.state.isEditDetailsDisabled)}
+                                    <Input name="name" label="שם:" value={this.state.data.name} disabled={this.state.isEditDetailsDisabled} onChange={this.nameChangedHander}/>
+                                    <Input name="email" label="מייל:" value={this.state.data.email} disabled={this.state.isEditDetailsDisabled} onChange={this.emailChangedHander} />
                                     <button onClick={this.handleEditDetailsClicked}
                                             className='btn btn-primary'>{this.state.editDetailsText}</button>
                                     <button className='btn btn-secondary'>שינוי סיסמא</button>
