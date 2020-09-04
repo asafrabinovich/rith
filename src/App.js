@@ -38,8 +38,8 @@ export default class App extends Component{
                 <div className='content'>
                     <Switch>
                         <Route path='/home' component={Home}/>
-                        <Route path = '/apartments/:apartmentId/reviews/:reviewId' component = {Review}/>
-                        <Route path = '/apartments/:apartmentId' component = {Apartment}/>
+                        <Route path='/apartments/:apartmentId/reviews/:userID' component={Review}/>
+                        <Route path='/apartments/:apartmentId' component={Apartment}/>
                         <Route path='/upload-review/:apartmentId' component={UploadReview}/>
                         <ProtectedRoute path='/upload-review' component={UploadReviewWelcome}/>
                         <Route path='/thank-you' component={ThankYou}/>

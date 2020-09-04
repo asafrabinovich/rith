@@ -164,8 +164,7 @@ export default class UploadReview extends Form{
          try{
              const apartmentId = this.props.match.params.apartmentId;
              if(apartmentId === 'new') return;
-             const apartment = getApartment(apartmentId);
-
+             const apartment = await getApartment(apartmentId);
              if(apartment._id){
                  delete apartment[apartment._id];
              }
@@ -202,13 +201,14 @@ export default class UploadReview extends Form{
     mapToViewModel(apartment) {
         const lastPayments= getLatestPayments(apartment);
         return {
-            street:apartment.street,
+            street: apartment.street,
             streetNumber: apartment.streetNumber,
             apartmentNumber: apartment.apartmentNumber,
             numberOfRooms: apartment.numberOfRooms,
             floorNumber: apartment.floorNumber,
             squareFit: apartment.squareFit,
-            ownerName:apartment.ownerDocument
+            ownerName: apartment.ownerDocument,
+            city: apartment.city
         }
     }
 
@@ -292,10 +292,6 @@ export default class UploadReview extends Form{
         await this.setState({malfunctions});
     }
     validateSubmission = ()=>{
-        // console.log("Uploaded Docs: ", this.validateUploadedDocs());
-        // console.log("Chosen City: ", this.validateChosenCity());
-        // console.log("Errors: ", this.state.errors);
-
         return (this.validateUploadedDocs())
     }
     validateUploadedDocs = ()=>{
@@ -304,14 +300,11 @@ export default class UploadReview extends Form{
     }
     validateChosenCity =() =>{
         const {city} = this.state.data;
-        console.log("Chsen City: ", city)
         let res = (city.key == "Default")?  false :  true;
         return res
     }
     setMainPhoto = async()=>{
         const {malfunctions} = this.state;
-        console.log("state photo:",this.state.mainPhoto)
-
         let mainPhoto;
         malfunctions.forEach(malfunction => {
             if(!this.state.mainPhoto && malfunction.files.length > 0) {
@@ -320,13 +313,10 @@ export default class UploadReview extends Form{
             }
         );
         const data = {...this.state.data};
-        console.log("my photo:",mainPhoto)
-
         if(mainPhoto){
             data["mainPhoto"]= mainPhoto;
             this.setState({data});
         }
-        console.log("statusL ", this.state)
     }
     buildApartmentJson =  ()=>{
         const {street,streetNumber,city,apartmentNumber, floorNumber, squareFit, ownerName, rent, waterBill, electricityBill, taxProperty,numberOfRooms,ratingStatus,mainPhoto} = this.state.data;
@@ -387,7 +377,7 @@ export default class UploadReview extends Form{
                                 <Container>
                                     {this.renderInput('street', 'רחוב')}
                                     {this.renderInput('streetNumber', 'מספר')}
-                                    {this.renderSelect('city', 'עיר', this.state.cities)}
+                                    {this.renderSelect('city', 'עיר', this.state.cities, this.state.data.city)}
                                     {this.renderInput('apartmentNumber', 'מספר דירה')}
                                 </Container>
                             </GridListTile>

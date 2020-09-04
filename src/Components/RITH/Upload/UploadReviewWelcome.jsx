@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getApartments, getFullAddress} from "../../../Services/FakeAptService";
+import {getApartments2, getFullAddress} from "../../../Services/FakeAptService";
 import SearchBox from "../../Common/SearchBox";
 import ApartmentsTable from "../Object Model/ApartmentsTable";
 import { Container } from '@material-ui/core';
@@ -9,9 +9,10 @@ export default class UploadReviewWelcome extends Component {
         apartments : [],
         searchQuery:''
     }
-    componentDidMount() {
+
+    async componentDidMount() {
         // const {data:apartments} = await getApartments();
-        const apartments = getApartments();
+        const apartments = await getApartments2();
         this.setState({apartments});
     }
 

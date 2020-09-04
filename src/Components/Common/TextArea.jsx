@@ -8,14 +8,16 @@ const TextArea = ({name, label, error,headline,subHeadline,text, ...rest}) =>{
             </div>
 
             <h6 className='w-75'>{subHeadline}</h6>
-            <p
+            <textarea
                 id={name}
-                name= {name}
+                name={name}
                 className="form-control"
-
+                {...rest}
+                disabled={true}
+                style={{background: 'white'}}
             >
                 {text}
-            </p>
+            </textarea>
         </div>
 
     );

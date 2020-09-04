@@ -53,14 +53,6 @@ export default class Form extends Component{
         this.setState({data, errors});
     };
 
-    // renderButton = (label) => {
-    //     return <button
-    //         disabled={this.validate()}
-    //         className="btn btn-primary float-left"
-    //     >
-    //         {label}
-    //     </button>
-    // }
 
     renderButton = (label,addToValidation = ()=> {return true}) => {
         return <button
@@ -70,14 +62,7 @@ export default class Form extends Component{
             {label}
         </button>
     }
-    // renderButton = (label,addToValidation = ()=> {return false}) => {
-    //     return <button
-    //         disabled={this.validate() || addToValidation()}
-    //         className="btn btn-primary float-left"
-    //     >
-    //         {label}
-    //     </button>
-    // }
+
     renderInput = (name, label,type = 'text') =>{
         const {data, errors} = this.state;
         return <Input
@@ -89,15 +74,16 @@ export default class Form extends Component{
             onChange={this.handleChange}
         />
     };
-    renderSelect = (name, label, options) =>{
+    renderSelect = (name, label, options, selectedOption = null) => {
         const {data, errors} = this.state;
         return <Select
-            name= {name}
+            name={name}
             key={name}
             value={data[name]}
             label={label}
             error={errors[name]}
             options={options}
+            selectedOption={selectedOption}
             onChange={this.handleChange}
         />
     };

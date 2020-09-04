@@ -9,21 +9,21 @@ export default class Malfunctions extends Component {
         // const allMalfunctions = _.orderBy(malfunctions,'time','desc')
         return (
             <React.Fragment>
-                {malfunctions
+                {malfunctions && malfunctions
                     .map(malfunction => {
                         return (
                             <Container className='mt-4'>
                                 <Malfunction
-                                    name={ malfunction.key? malfunction.key: malfunction.type }
+                                    name={malfunction.key ? malfunction.key : malfunction.type}
                                     data={data}
                                     errors={errors}
                                     onChange={onChange}
                                     onRemove={onRemove}
-                                    notifyWhenImageSelected = {notifyWhenImageSelected}
+                                    notifyWhenImageSelected={notifyWhenImageSelected}
                                     notifyWhenImageRemoved={notifyWhenImageRemoved}
                                     viewOnly={viewOnly}
-                                    text = {malfunction.Text}
-                                    images = {malfunction.photos}
+                                    text={malfunction.text}
+                                    images={malfunction.files}
 
                                 />
 

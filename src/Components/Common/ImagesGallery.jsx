@@ -7,11 +7,11 @@ import {
     MDBMask,
     MDBContainer
 } from "mdbreact";
+import httpService from "../../Services/httpService";
 
 class CarouselPage extends Component {
     render() {
         const {images} = this.props;
-        console.log(images)
         let index = 0;
         return (
             <MDBContainer>
@@ -31,7 +31,7 @@ class CarouselPage extends Component {
                                     <MDBView>
                                         <img
                                             className="d-block w-100"
-                                            src={image.link}
+                                            src={httpService.getImage(image.fileName)}
                                         />
                                         <MDBMask overlay="black-light" />
                                     </MDBView>

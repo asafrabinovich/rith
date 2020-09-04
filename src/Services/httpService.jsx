@@ -31,8 +31,8 @@ export async function uploadImage(file)
     let formData = new FormData();
     formData.append("file", file);
 
-    const NewImg = await axios.post("http://127.0.0.1:5000" + "/uploadFile",formData,config);
-    return {fileName:NewImg.data.filename, fileURL:"http://127.0.0.1:5000" + "/getFile?name=" + NewImg.data.filename};
+    const NewImg = await axios.post(apiUrl + "/uploadFile", formData, config);
+    return {fileName: NewImg.data.filename, fileURL: apiUrl + "/getFile?name=" + NewImg.data.filename};
 }
 export async function uploadFile(file)
 {
@@ -43,31 +43,36 @@ export async function uploadFile(file)
     }
     let formData = new FormData();
     formData.append("file", file);
-    const NewFile = await axios.post("http://127.0.0.1:5000" + "/uploadSensitiveFile",formData,config);
+    const NewFile = await axios.post(apiUrl + "/uploadSensitiveFile", formData, config);
     return NewFile.data.filename;
 }
 
-export async function fakeUploadFile(file) {
-    const fd = new FormData();
-    fd.append("File",file,file.name);
-    await axios.post("http://127.0.0.1:5000" + "/apartments");
-
-}
 export async function sendContactForm(data) {
     console.log("Json Before Sending: ", data)
-    await axios.post(apiUrl + "/contact",data);
+    await axios.post(apiUrl + "/contact", data);
 }
-export  function getImage(imageName) {
+
+export function getImage(imageName) {
 
     return apiUrl + "/getFile?name=" + imageName;
 }
+
+export async function getUploaderName(userID) {
+    console.log("userID: ", userID)
+
+    const res = await axios.post(apiUrl + "/getUserNameById", {'id': userID});
+    console.log("Res: ", res)
+    return res.data.firstName
+}
+
 export default {
-    get : axios.get,
-    post : axios.post,
+    get: axios.get,
+    post: axios.post,
     put: axios.put,
-    delete : axios.delete,
+    delete: axios.delete,
     setJwt,
     sendContactForm,
-    getImage
+    getImage,
+    getUploaderName
 
 }

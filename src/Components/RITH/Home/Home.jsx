@@ -39,7 +39,7 @@ export default class Home extends Component {
         return(
             <React.Fragment>
                 <div className='row '>
-                    <div className='col-11 m-2 col'>
+                    <div className='col-11  col'>
                         <h1 className='rtl'>חפשו דירה</h1>
                     </div>
                 </div>

@@ -39,9 +39,10 @@ export default class Apartment extends Form{
         const apartmentId = this.props.match.params.apartmentId;
         await this.setState({apartmentId});
         const apartment = await getApartment(apartmentId);
+        console.log(apartment)
 
         if (apartment.reviews.length <= 1) {
-            this.props.history.push(`/apartments/${apartment._id}/reviews/${apartment.listOfReviews[0]._id}`);
+            this.props.history.push(`/apartments/${apartment._id}/reviews/${apartment.reviews[0].userID}`);
         } else {
             await this.setState({data: this.mapToViewModel(apartment)});
             await this.setState({reviews: apartment.reviews})
@@ -49,9 +50,9 @@ export default class Apartment extends Form{
 
         }
     }
-    handleReviewChosen = (reviewId) =>{
+    handleReviewChosen = (userID) => {
         const {apartmentId} = this.state;
-        this.props.history.push(`/apartments/${apartmentId}/reviews/${reviewId}`);
+        this.props.history.push(`/apartments/${apartmentId}/reviews/${userID}`);
     }
     mapToViewModel(apartment) {
         const lastPayments= getLatestPayments(apartment);

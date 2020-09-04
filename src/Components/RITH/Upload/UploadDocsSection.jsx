@@ -5,6 +5,7 @@ import FileUploader from "../../Common/FileUploader";
 import Approved from "../../../Resources/Images/Approved.png"
 import Disapproved from "../../../Resources/Images/Disapproved.png"
 
+
 export default class UploadDocsSection extends Component{
     state= {
             leaseFile: false,

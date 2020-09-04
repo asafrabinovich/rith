@@ -26,7 +26,7 @@ export default class ReviewWidget extends Component{
         let livingExperience = review.listOfMalfunctions.filter(m => m.key === 'livingExperience');
         const details = livingExperience[0].text.slice(0, 80) + "...";
         const mainPhoto = httpService.getImage(review.mainPhoto);
-        console.log("Review ID: ", review)//Continue 
+        console.log("Review ID: ", review)//Continue
         this.setState({title, details, mainPhoto});
     }
     render() {
@@ -35,8 +35,8 @@ export default class ReviewWidget extends Component{
         return(
             <React.Fragment >
                 <div
-                    onClick={() => onClick(review._id)}
-                    style={{cursor:'pointer'}}
+                    onClick={() => onClick(review.userID)}
+                    style={{cursor: 'pointer'}}
                 >
                     {/*<Link className="page-link" to={`/apartments/${apartment._id}`} >*/}
                     <Card
@@ -45,8 +45,8 @@ export default class ReviewWidget extends Component{
                         height ='200px'
                         title ={title}
                         details= {details}
-                        onClick = {onClick}
-                        parametersToClick = {review._id}
+                        onClick={onClick}
+                        parametersToClick={review.userID}
                     />
                 </div>
                 {/*</Link>*/}

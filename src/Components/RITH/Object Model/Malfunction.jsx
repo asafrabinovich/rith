@@ -42,7 +42,6 @@ export default class Malfunction extends Component{
             name= {name}
             rows = {numberOfRows}
             headline={headline}
-            subHeadline={subHeadline}
             text={text}
         />
     };
@@ -99,8 +98,8 @@ export default class Malfunction extends Component{
 
 
     render() {
-        const {name, onRemove,onChange,type,text, viewOnly = false, images = null} = this.props;
-        const {headline,subHeadline} = getMalfunctionProps(name);
+        const {name, onRemove, onChange, text, viewOnly = false, images = null} = this.props;
+        const {headline, subHeadline} = getMalfunctionProps(name);
         return(
             <React.Fragment>
                 {!viewOnly && this.renderTextAreaInput(name ,'6',headline,subHeadline,onChange,onRemove)}

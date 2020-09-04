@@ -6,6 +6,7 @@ export default class ImagesPreviewer extends Component{ //continue
 
     render() {
         const {images,onRemove} = this.props;
+        console.log("images: ", images)
         return(
             <GridList cols={5}>
                 {images.map(image =>{
