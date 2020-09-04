@@ -291,14 +291,7 @@ export default class UploadReview extends Form{
         malfunctions[index] = {...malfunctionToUpdate};
         await this.setState({malfunctions});
     }
-    handleSubmit =(data,schema) => {
-        console.log("test");
-            const options = {
-                abortEarly: false
-            };
-            const result = Joi.validate(data, schema, options);
-            // result.error === null -> valid
-    }
+
     validateSubmission = ()=>{
         return (this.validateUploadedDocs())
     }
@@ -430,7 +423,6 @@ export default class UploadReview extends Form{
                         </Container>
                         <Container>
                             {this.renderButton('סיים ושלח ביקורת', this.validateSubmission)}
-                            <button onClick={this.setMainPhoto}> בחר</button>
                         </Container>
                     </form>
                     <Container className=' h-auto mt-3 '>

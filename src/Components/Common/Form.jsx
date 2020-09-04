@@ -63,15 +63,16 @@ export default class Form extends Component{
         </button>
     }
 
-    renderInput = (name, label,type = 'text') =>{
+    renderInput = (name, label, type = 'text', isDisabled = false) => {
         const {data, errors} = this.state;
         return <Input
-            type = {type}
-            name= {name}
+            type={type}
+            name={name}
             value={data[name]}
             label={label}
             error={errors[name]}
             onChange={this.handleChange}
+            disabled={isDisabled}
         />
     };
     renderSelect = (name, label, options, selectedOption = null) => {

@@ -51,6 +51,11 @@ export default class NavBar extends Component{
                                 </li>
                             </React.Fragment>
                         }
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/private-area">
+                                <img src={UserIcon} className='user-icon-pic'/>
+                            </NavLink>
+                        </li>
                     </ul>
                 </div>
             </nav>
