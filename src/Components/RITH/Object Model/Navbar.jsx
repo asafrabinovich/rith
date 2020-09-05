@@ -29,6 +29,10 @@ export default class NavBar extends Component{
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/contact">צור קשר</NavLink>
                         </li>
+                    </ul>
+                </div>
+                <div className="ltr" id="navbarNav">
+                    <ul  className="navbar-nav">
                         {
                             !this.props.user &&
                             <React.Fragment>
