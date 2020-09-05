@@ -61,7 +61,6 @@ export async function getUploaderName(userID) {
     console.log("userID: ", userID)
 
     const res = await axios.post(apiUrl + "/getUserNameById", {'id': userID});
-    console.log("Res: ", res)
     return res.data.firstName
 }
 
