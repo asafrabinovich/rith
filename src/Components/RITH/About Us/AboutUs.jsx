@@ -12,7 +12,7 @@ import { Container } from "@material-ui/core";
 const AboutUs = () => {
     return (
 
-        <Container className='mt-3' maxWidth='md'>
+        <Container className='mt-3' maxWidth='sm'>
             <div className='text-center rtl'>
                 <h2>המטרה שלנו</h2>
                 {/*{/<DatePickerInput/>/}*/}
