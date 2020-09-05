@@ -37,22 +37,18 @@ export function getUserDetails() {
         }
     }
 
-    const UserDetails = httpService.get(apiUrl + "/getUserDetails", config);
+    const UserDetails = httpService.get(apiUrl + "/getUserDetails",config);
     console.log(UserDetails);
     return UserDetails;
 }
-
-export async function getUserReviews() {
+export function getUserReviews() {
     let config = {
         headers: {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
 
-    const UserReviews = await httpService.get(apiUrl + "/reviews", config);
-    return UserReviews.data;
-}
-
-export function getUserReviews2() {
-
+    const UserReviews = httpService.get(apiUrl + "/reviews",config);
+    console.log(UserReviews);
+    return UserReviews;
 }
