@@ -55,7 +55,7 @@ export default class App extends Component{
                         <Redirect  to='/not-found'/>
                     </Switch>
                 </div>
-                {/*<Footer/>*/}
+                {<Footer/>}
             </React.Fragment>
         );
     }
