@@ -1,6 +1,7 @@
 import httpService from "./httpService";
 import {apiUrl} from "../config.json";
 import {getJwt} from "./authService";
+import _ from 'lodash';
 
 
 const apiEndpoint = apiUrl + "/register";
@@ -64,7 +65,7 @@ export function getUserReviews() {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
-    const UserReviews = httpService.get(apiUrl + "/reviews", config);
-    console.log(UserReviews);
-    return UserReviews;
+    const result = httpService.get(apiUrl + "/reviews", config);
+
+    return result;
 }

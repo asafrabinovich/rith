@@ -35,27 +35,24 @@ export default class PrivateAreaReviewWidget extends Component {
     }
 
     render() {
-        const {review, onClick} = this.props;
-        const {title, details, mainPhoto, status, ratingStatus} = this.state;
+        const {review, onClick, apartmentID} = this.props;
+        const {title, mainPhoto, status, ratingStatus} = this.state;
+        console.log("Review", review)
         return (
             <React.Fragment>
-                <div
-                    onClick={() => onClick(review.userID)}
-                    style={{cursor: 'pointer'}}
-                >
-                    {/*<Link className="page-link" to={`/apartments/${apartment._id}`} >*/}
-                    <PrivateAreaCard
-                        pic={mainPhoto}
-                        width='200px'
-                        height='200px'
-                        title={title}
-                        status={status}
-                        ratingStatus={ratingStatus}
-                        onClick={onClick}
-                        parametersToClick={review.userID}
-                    />
-                </div>
-                {/*</Link>*/}
+                {/*<Link className="page-link" to={`/apartments/${apartment._id}`} >*/}
+                <PrivateAreaCard
+                    pic={mainPhoto}
+                    width='200px'
+                    height='200px'
+                    title={title}
+                    status={status}
+                    ratingStatus={ratingStatus}
+                    onClick={onClick}
+                    // parametersToClick={review.userID}
+                    apartmentID={apartmentID}
+                    reviewID={review.id}
+                />
             </React.Fragment>
 
         );

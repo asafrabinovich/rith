@@ -5,6 +5,7 @@ import Input from "../../Common/Input";
 import Joi from "joi-browser";
 import {Container, GridList, GridListTile} from '@material-ui/core';
 import auth from "../../../Services/authService";
+import PrivateAreaReviewsTable from "../Object Model/PrivateAreaReviewsTable";
 
 export default class PrivateArea extends Form {
     state = {
@@ -67,32 +68,16 @@ export default class PrivateArea extends Form {
 
     async componentDidMount() {
         const details = await getUserDetails();
-        const reviews = await getUserReviews();
+        const UserReviewsResult = await getUserReviews();
+        const reviews = this.buildReviews(UserReviewsResult);
         const data = {name: details.data.userName, email: details.data.email}
-        await this.setState({data: data, reviews: reviews.data, defaultData: data});
+        await this.setState({data: data, reviews: reviews, defaultData: data});
+        console.log("STATE: ", this.state)
     }
 
-    handleEditDetailsClicked = async () => {
-        let state = {...this.state};
-        state.isEditDetailsDisabled = !state.isEditDetailsDisabled;
-        if (state.editDetailsText === 'שמור') {
-            state.editDetailsText = 'ערוך פרטים'
-            const affirmation = await editUserDetails(state.data.name, state.data.email);
-        } else {
-            state.editDetailsText = 'שמור'
-        }
-        this.setState({isEditDetailsDisabled: state.isEditDetailsDisabled, editDetailsText: state.editDetailsText});
-    }
-
-    HandleChangePasswordClicked = () => {
-        let state = {...this.state};
-        state.isEditDetailsSectionActive = !state.isEditDetailsSectionActive;
-        this.setState({isEditDetailsSectionActive: state.isEditDetailsSectionActive});
-        this.setPrivateDetailsToDefault();
-    }
     setPrivateDetailsToDefault = () => {
         let state = {...this.state};
-        state.isEditDetailsDisabled = state.isEditDetailsSectionActive ? state.isEditDetailsDisabled : true;
+        state.isEditDetailsDisabled = true;
         state.editDetailsText = 'ערוך פרטים';
         state.data.name = state.defaultData.name;
         state.data.email = state.defaultData.email;
@@ -128,9 +113,23 @@ export default class PrivateArea extends Form {
         console.log(this.state.data.newPassword)
         return !(this.state.data.newPassword === this.state.data.newPasswordConfirmation && this.state.data.newPassword && this.state.data.oldPassword);
     }
+    buildReviews = (result) => {
+        let userReviews = [];
+        result.data.forEach(object => {
+            if (object.reviews.length > 0) {
+                userReviews = [...userReviews, {reviewObject: object.reviews[0], apartmentID: object._id}];
+            }
+        })
+        return userReviews
+    }
+    handleReviewChosen = (reviewID, apartmentID) => {
+        console.log('reviewID', reviewID)
+        console.log('apartmentID', apartmentID)
+
+        // window.location = `/upload-review/${apartmentID}${reviewID}`;
+    }
 
     render() {
-        const {isEditDetailsSectionActive} = this.state
 
         return (
             <React.Fragment>
@@ -164,8 +163,13 @@ export default class PrivateArea extends Form {
                                             className='btn btn-secondary'>ביטול
                                     </button>
                                 </Container>
-
                             </GridListTile>
+                        </GridList>
+                    </Container>
+                    <Container className='rtl w-75'>
+                        <h3> הביקורות שלי:</h3>
+                        <GridList cols={1}>
+                            <PrivateAreaReviewsTable reviews={this.state.reviews} onClick={this.handleReviewChosen}/>
                         </GridList>
                     </Container>
                 </div>

@@ -9,8 +9,7 @@ import PrivateAreaReviewWidget from "./PrivateAreaReviewWidget";
 export default class PrivateAreaReviewsTable extends Component {
 
     render() {
-        // const {reviews,onClick} = this.props;
-        const {reviews} = this.props;
+        const {reviews, onClick} = this.props;
 
         return (
             <div className='m-5'>
@@ -19,7 +18,8 @@ export default class PrivateAreaReviewsTable extends Component {
                         return (
                             <GridListTile className='h-auto ' key={review._id}>
                                 {/*<ReviewWidget review={review} onClick={onClick}/>*/}
-                                <PrivateAreaReviewWidget review={review}/>
+                                <PrivateAreaReviewWidget review={review.reviewObject} apartmentID={review.apartmentID}
+                                                         onClick={onClick}/>
                             </GridListTile>
                         );
                     })}
