@@ -50,22 +50,38 @@ export function getCurrentUser() {
         return null;
     }
 }
+
 export function getJwt() {
     return localStorage.getItem(tokenKey);
 }
 
-export  function fakeLogin(email,password) {
+export function fakeLogin(email, password) {
     console.log("Fake Login Called")
 }
-export  function fakeLogout(key) {
+
+export function fakeLogout(key) {
     console.log("Fake Logout Called")
 }
+
+export async function changePassword(passwordsToSend) {
+    let config = {
+        headers: {
+            'Authorization': 'Bearer ' + getJwt()
+        }
+    }
+    try {
+        const res = await httpService.post(apiEndpoint + '/changePassword', passwordsToSend, config);
+    } catch (e) {
+        throw e;
+    }
+}
+
 export default {
     login,
     logout,
     getCurrentUser,
     loginWithJwt,
     getJwt,
-    fakeLogin,
+    changePassword,
     fakeLogout
 };
