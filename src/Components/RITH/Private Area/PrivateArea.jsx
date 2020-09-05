@@ -4,16 +4,16 @@ import Form from "../../Common/Form";
 import Input from "../../Common/Input";
 import Joi from "joi-browser";
 import {Container, GridList, GridListTile} from '@material-ui/core';
+import auth from "../../../Services/authService";
 
 export default class PrivateArea extends Form {
     state = {
-        data: {name: "", email: "", firstPassword: '', secondPassword: '', newPassword: ''},
+        data: {name: "", email: "", oldPassword: '', newPassword: '', newPasswordConfirmation: ''},
+        defaultData: {name: "", email: "", oldPassword: '', newPassword: '', newPasswordConfirmation: ''},
         reviews: [],
         errors: {},
         isEditDetailsDisabled: true,
-        isEditDetailsActive: true,
         isPasswordChangeActive: false,
-
         editDetailsText: "ערוך פרטים"
     }
 
@@ -36,7 +36,7 @@ export default class PrivateArea extends Form {
                     message: 'יש להזין כתובת אימייל',
                 };
             }),
-        firstPassword: Joi
+        oldPassword: Joi
             .string()
             .required()
             .label('סיסמא נוכחית')
@@ -45,22 +45,22 @@ export default class PrivateArea extends Form {
                     message: 'יש להזין את הסיסמא',
                 };
             }),
-        secondPassword: Joi
+        newPassword: Joi
             .string()
             .required()
             .label('אימות סיסמא')
             .error(() => {
                 return {
-                    message: 'יש להזין את הסיסמא',
+                    message: 'יש להזין את הסיסמא החדשה או שהססמאות אינן זהות',
                 };
             }),
-        newPassword: Joi
+        newPasswordConfirmation: Joi
             .string()
             .required()
             .label('סיסמא חדשה')
             .error(() => {
                 return {
-                    message: 'יש להזין את הסיסמא החדשה',
+                    message: 'יש להזין את הסיסמא החדשה שוב או שהססמאות אינן זהות',
                 };
             }),
     }
@@ -69,7 +69,7 @@ export default class PrivateArea extends Form {
         const details = await getUserDetails();
         const reviews = await getUserReviews();
         const data = {name: details.data.userName, email: details.data.email}
-        await this.setState({data: data, reviews: reviews.data});
+        await this.setState({data: data, reviews: reviews.data, defaultData: data});
     }
 
     handleEditDetailsClicked = async () => {
@@ -84,37 +84,53 @@ export default class PrivateArea extends Form {
         this.setState({isEditDetailsDisabled: state.isEditDetailsDisabled, editDetailsText: state.editDetailsText});
     }
 
-    changePasswordClickedHandler = () => {
+    HandleChangePasswordClicked = () => {
         let state = {...this.state};
-        state.isPasswordChangeActive = !state.isPasswordChangeActive;
-        state.isEditDetailsActive = !state.isPasswordChangeActive;
+        state.isEditDetailsSectionActive = !state.isEditDetailsSectionActive;
+        this.setState({isEditDetailsSectionActive: state.isEditDetailsSectionActive});
+        this.setPrivateDetailsToDefault();
+    }
+    setPrivateDetailsToDefault = () => {
+        let state = {...this.state};
+        state.isEditDetailsDisabled = state.isEditDetailsSectionActive ? state.isEditDetailsDisabled : true;
+        state.editDetailsText = 'ערוך פרטים';
+        state.data.name = state.defaultData.name;
+        state.data.email = state.defaultData.email;
         this.setState({
-            isPasswordChangeActive: state.isPasswordChangeActive,
-            isEditDetailsActive: state.isEditDetailsActive
+            isEditDetailsDisabled: state.isEditDetailsDisabled,
+            editDetailsText: state.editDetailsText,
+            data: state.data
         })
     }
-
-    handleNameChanged = (event) => {
-        let data = {...this.state.data};
-        data.name = event.target.value;
-        this.setState({data: data});
+    setPasswordsToDefault = () => {
+        let state = {...this.state};
+        state.data.oldPassword = state.data.newPassword = state.data.newPasswordConfirmation = '';
+        this.setState({
+            oldPassword: state.data.oldPassword,
+            newPassword: state.data.newPassword,
+            newPasswordConfirmation: state.data.newPasswordConfirmation
+        })
     }
-    handleEmailChanged = (event) => {
-        let data = {...this.state.data};
-        data.email = event.target.value;
-        this.setState({data: data});
+    handleChangePasswordSubmit = async () => {
+        const passwordsToSend = {'oldPassword': this.state.data.oldPassword, 'newPassword': this.state.data.newPassword}
+        try {
+            await auth.changePassword(passwordsToSend);
+            this.setPasswordsToDefault();
+        } catch (e) {
+            if (e.response && (e.response.status === 400 || e.response.status === 401)) {
+                const errors = {...this.state.errors};
+                errors.oldPassword = "הסיסמא הקודמת אינה נכונה";
+                this.setState({errors});
+            }
+        }
     }
-    handleFirstPasswordChanged = (event) => {
-        let data = {...this.state.data};
-        data.firstPassword = event.target.value;
-        this.setState({data: data});
-    }
-    setToDefault = () => {
-        this.componentDidMount()
+    verifyNewPasswordConfirmation = () => {
+        console.log(this.state.data.newPassword)
+        return !(this.state.data.newPassword === this.state.data.newPasswordConfirmation && this.state.data.newPassword && this.state.data.oldPassword);
     }
 
     render() {
-        const {isEditDetailsActive, isPasswordChangeActive} = this.state
+        const {isEditDetailsSectionActive} = this.state
 
         return (
             <React.Fragment>
@@ -123,40 +139,32 @@ export default class PrivateArea extends Form {
                     <Container className=' rtl w-75'>
                         <GridList cols={2}>
                             <GridListTile className='h-auto '>
-                                {
-                                    isEditDetailsActive &&
-                                    <Container className=' w-75'>
-                                        <h3> פרטים אישיים:</h3>
-                                        <Input name="name" label="שם:" value={this.state.data.name}
-                                               disabled={this.state.isEditDetailsDisabled}
-                                               onChange={this.handleNameChanged}/>
-                                        <Input name="email" label="מייל:" value={this.state.data.email}
-                                               disabled={this.state.isEditDetailsDisabled}
-                                               onChange={this.handleEmailChanged}/>
-                                        <button onClick={this.handleEditDetailsClicked}
-                                                className='btn btn-primary mr-2'>{this.state.editDetailsText}</button>
-                                        <button onClick={this.changePasswordClickedHandler}
-                                                className='btn btn-secondary'>שינוי סיסמא
-                                        </button>
-                                    </Container>
-                                }
-
-
-                                ////
-                                {isPasswordChangeActive &&
                                 <Container className=' w-75'>
-                                    <h3> שינוי סיסמא:</h3>
-                                    <Input name="firstPassword" label="סיסמא ישנה:"/>
-                                    <Input name="secondPassword" label="סיסמא חדשה:"/>
-                                    <Input name="newPassword" label="סיסמא חדשה:"/>
+                                    <h3> פרטים אישיים:</h3>
+                                    {this.renderInput('name', 'שם:', 'text', this.state.isEditDetailsDisabled)}
+                                    {this.renderInput('email', 'מייל:', 'text', this.state.isEditDetailsDisabled)}
                                     <button onClick={this.handleEditDetailsClicked}
-                                            className='btn btn-primary'>אישור
-                                    </button>
-                                    <button onClick={this.changePasswordClickedHandler}
-                                            className='btn btn-secondary'>חזרה
+                                            className='btn btn-primary mr-2'>{this.state.editDetailsText}</button>
+                                    <button onClick={this.setPrivateDetailsToDefault}
+                                            className='btn btn-secondary'>ביטול
                                     </button>
                                 </Container>
-                                }
+                            </GridListTile>
+                            <GridListTile className='h-auto '>
+                                <Container className=' w-75'>
+                                    <h3> שינוי סיסמא:</h3>
+                                    {this.renderInput('oldPassword', 'סיסמא ישנה:')}
+                                    {this.renderInput('newPassword', 'סיסמא חדשה:')}
+                                    {this.renderInput('newPasswordConfirmation', 'סיסמא חדשה:')}
+                                    <button onClick={this.handleChangePasswordSubmit}
+                                            className='btn btn-primary mr-2'
+                                            disabled={this.verifyNewPasswordConfirmation()}>אישור
+                                    </button>
+                                    <button onClick={this.setPasswordsToDefault}
+                                            className='btn btn-secondary'>ביטול
+                                    </button>
+                                </Container>
+
                             </GridListTile>
                         </GridList>
                     </Container>
