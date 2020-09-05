@@ -39,7 +39,6 @@ export default class Apartment extends Form{
         const apartmentId = this.props.match.params.apartmentId;
         await this.setState({apartmentId});
         const apartment = await getApartment(apartmentId);
-        console.log(apartment)
 
         if (apartment.reviews.length <= 1) {
             this.props.history.push(`/apartments/${apartment._id}/reviews/${apartment.reviews[0].userID}`);

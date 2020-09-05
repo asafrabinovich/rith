@@ -308,9 +308,9 @@ export default class UploadReview extends Form{
         const {malfunctions} = this.state;
         let mainPhoto;
         malfunctions.forEach(malfunction => {
-            if(!this.state.mainPhoto && malfunction.files.length > 0) {
-                    mainPhoto = malfunction.files[0].fileName;
-                }
+            if (!this.state.data.mainPhoto && malfunction.files.length > 0) {
+                mainPhoto = malfunction.files[0].fileName;
+            }
             }
         );
         const data = {...this.state.data};

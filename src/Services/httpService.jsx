@@ -58,10 +58,8 @@ export function getImage(imageName) {
 }
 
 export async function getUploaderName(userID) {
-    console.log("userID: ", userID)
-
     const res = await axios.post(apiUrl + "/getUserNameById", {'id': userID});
-    return res.data.firstName
+    return res.data.userName
 }
 
 export default {
