@@ -128,6 +128,19 @@ export default class PrivateArea extends Form {
 
         // window.location = `/upload-review/${apartmentID}${reviewID}`;
     }
+    handleEditDetailsClicked = () => {
+        let state = {...this.state};
+        state.isEditDetailsDisabled = !state.isEditDetailsDisabled;
+        if(state.isEditDetailsDisabled && this.verifyDetailsChanged()){ 
+            editUserDetails(state.data.name, state.data.email);
+        }
+        this.setState({isEditDetailsDisabled:state.isEditDetailsDisabled});
+    }
+    verifyDetailsChanged = () => {
+        return (this.state.data.name!== this.state.defaultData.name ||
+            this.state.data.email !== this.state.defaultData.email)
+    }
+    
 
     render() {
 
