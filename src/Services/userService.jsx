@@ -17,8 +17,7 @@ export function register(user) {
     return httpService.post(apiEndpoint, {
         "email": user.username,
         "password": user.password,
-        "firstName": user.name,
-        "lastName": user.name
+        "userName": user.name,
     })
 }
 
