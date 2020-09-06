@@ -72,7 +72,6 @@ export default class PrivateArea extends Form {
         const reviews = this.buildReviews(UserReviewsResult);
         const data = {name: details.data.userName, email: details.data.email}
         await this.setState({data: data, reviews: reviews, defaultData: data});
-        console.log("STATE: ", this.state)
     }
 
     setPrivateDetailsToDefault = () => {
@@ -110,7 +109,6 @@ export default class PrivateArea extends Form {
         }
     }
     verifyNewPasswordConfirmation = () => {
-        console.log(this.state.data.newPassword)
         return !(this.state.data.newPassword === this.state.data.newPasswordConfirmation && this.state.data.newPassword && this.state.data.oldPassword);
     }
     buildReviews = (result) => {
@@ -125,8 +123,7 @@ export default class PrivateArea extends Form {
     handleReviewChosen = (reviewID, apartmentID) => {
         console.log('reviewID', reviewID)
         console.log('apartmentID', apartmentID)
-
-        // window.location = `/upload-review/${apartmentID}${reviewID}`;
+        this.props.history.push(`/upload-review/${apartmentID}/${reviewID}`);
     }
     handleEditDetailsClicked = () => {
         let state = {...this.state};

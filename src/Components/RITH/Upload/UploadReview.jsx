@@ -163,12 +163,24 @@ export default class UploadReview extends Form{
     async populateApartment(){
          try{
              const apartmentId = this.props.match.params.apartmentId;
-             if(apartmentId === 'new') return;
+             const reviewId = this.props.match.params.reviewId;
+             if (apartmentId === 'new') return;
              const apartment = await getApartment(apartmentId);
-             if(apartment._id){
+
+
+             // console.log("apartment",apartment)
+             //
+             // console.log("review",review)
+             if (apartment._id) {
                  delete apartment[apartment._id];
              }
-             this.setState({data: this.mapToViewModel(apartment)});
+             let review;
+             if (reviewId) {
+                 review = {...apartment.reviews.filter(review => review.id === reviewId)};
+                 this.mapToViewModel(apartment, review[0])
+             } else {
+                 this.mapToViewModel(apartment);
+             }
          }catch (e) {
              if(e.response && e.response.status === 404)
              {
@@ -198,17 +210,40 @@ export default class UploadReview extends Form{
         await this.populateMalfunctions();
     };
 
-    mapToViewModel(apartment) {
-        const lastPayments= getLatestPayments(apartment);
-        return {
+    async mapToViewModel(apartment, review = null) {
+        let data;
+        let apartmentFields = {
             street: apartment.street,
             streetNumber: apartment.streetNumber,
             apartmentNumber: apartment.apartmentNumber,
             numberOfRooms: apartment.numberOfRooms,
             floorNumber: apartment.floorNumber,
             squareFit: apartment.squareFit,
-            ownerName: apartment.ownerDocument,
-            city: apartment.city
+            ownerName: apartment.ownerName,
+            city: apartment.city,
+            ratingStatus: 0,
+
+        }
+
+        if (review) {
+            let reviewFields = {
+                rent: review.lastRent,
+                waterBill: review.lastWaterBill,
+                electricityBill: review.lastElectricityBill,
+                taxProperty: review.propertyTax,
+                ratingStatus: review.ratingStatus,
+                mainPhoto: review.mainPhoto
+            }
+            data = {...apartmentFields, ...reviewFields};
+            await this.setState({
+                data: data,
+                malfunctions: review.listOfMalfunctions,
+                leaseFile: review.contract,
+                idFile: review.identificationCard
+            });
+        } else {
+            data = {...apartmentFields};
+            await this.setState({data: data});
         }
     }
 
@@ -359,7 +394,8 @@ export default class UploadReview extends Form{
 
 
     render(){
-        const {malfunctionsOptions,malfunctions,data,errors} = this.state;
+        const {malfunctionsOptions, malfunctions, data, errors} = this.state;
+        const {ratingStatus} = this.state.data;
         return (
             <React.Fragment>
                 <Container className= ' rtl w-75'>
@@ -368,7 +404,8 @@ export default class UploadReview extends Form{
                         <h2 className='mt-3 '>פרטים "יבשים"</h2>
                         <h6 className='mb-4 '>אנא מלאו את השדות הבאים:</h6>
                         <p>דירוג כללי:</p>
-                        <Rating dir="ltr" name="simple-controlled" defaultValue={0} size="large" onChange={(e) => this.handleScoreSelected(e.target.value)} />
+                        <Rating dir="ltr" name="simple-controlled" value={ratingStatus} size="large"
+                                onChange={(e) => this.handleScoreSelected(e.target.value)}/>
 
                     </Container>
 
