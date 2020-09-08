@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Joi from 'joi-browser';
-import {apiUrl} from "../config";
+import {apiUrl} from "../../../config.json";
 import Form from "../../Common/Form";
 import auth from "../../../Services/authService";
 import {Redirect} from "react-router-dom";
