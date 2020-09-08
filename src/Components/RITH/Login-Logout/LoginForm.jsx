@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import Joi from 'joi-browser';
+import {apiUrl} from "../config";
 import Form from "../../Common/Form";
 import auth from "../../../Services/authService";
 import {Redirect} from "react-router-dom";
 import {Container} from "@material-ui/core";
+const apiRegisterEndpoint = apiUrl + "/register";
 
 export default class LoginForm extends Form{
     state = {
@@ -50,7 +52,7 @@ export default class LoginForm extends Form{
     };
     routeToRegister = ()=>{
         const {state} = this.props.location;
-        window.location = '/register';
+        window.location = apiRegisterEndpoint;
     }
     isReroutedFromUploadReview = () =>{
         const {state} = this.props.location;
