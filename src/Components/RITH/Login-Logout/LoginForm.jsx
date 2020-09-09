@@ -51,8 +51,8 @@ export default class LoginForm extends Form{
         }
     };
     routeToRegister = ()=>{
-        const {state} = this.props.location;
-        window.location = apiRegisterEndpoint;
+        this.props.history.push('/register');
+
     }
     isReroutedFromUploadReview = () =>{
         const {state} = this.props.location;
