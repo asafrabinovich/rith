@@ -51,7 +51,8 @@ export default class LoginForm extends Form{
         }
     };
     routeToRegister = ()=>{
-        this.props.history.push('/register');
+        const { history } = this.props;
+        history.push("/register")
 
     }
     isReroutedFromUploadReview = () =>{
