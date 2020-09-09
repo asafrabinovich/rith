@@ -9,7 +9,7 @@ import {
     getCities,
     getMalfunctions,
     getMalfunctionKey, getDefaultMalfunctions, saveApartmentReview,
-    editApartmentReview
+    //editApartmentReview
 } from "../../../Services/FakeAptService";
 
 import UploadOptionsSection from "./UploadOptionsSection";
@@ -398,7 +398,7 @@ export default class UploadReview extends Form{
         await this.setMainPhoto();
         const apartmentJson = this.buildApartmentJson();
         if(this.state.isEditMode){
-            editApartmentReview(apartmentJson)
+           // editApartmentReview(apartmentJson)
         }
         else{
         await saveApartmentReview(apartmentJson);
