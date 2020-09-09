@@ -306,6 +306,29 @@ export async function  saveApartmentReview(apartment) {
     res = await httpService.post(requestURL , dataToUploadBySchema,config);
     console.log("Result: ",res);
 }
+// export async function  editApartmentReview(apartment) {
+//     console.log("edit Apartment Review");
+//     let dataToEdit = apartment;
+//     let requestURL = apiUrl + "/reviews";
+//     let res;
+//     let config = {
+//         headers: {
+//             'Authorization': 'Bearer ' + getJwt()
+//         }
+//     }
+//     // if(apartment._id){
+//     //     const body = {...apartment};
+//     //     delete body._id;
+//     //     dataToEdit = body;
+//     //     requestURL += "/" + apartment._id;
+//     // }
+//     console.log("URL:", requestURL);
+//     const dataToUploadBySchema = getDataToUploadBySchema(dataToEdit);
+//     console.log("After Schema:", dataToUploadBySchema);
+
+//     res = await httpService.put(requestURL , dataToUploadBySchema,config);
+//     console.log("Result: ",res);
+// }
 
 function getDataToUploadBySchema(dataToUploadBySchema){
     return{

@@ -8,7 +8,8 @@ import {
     getLatestPayments,
     getCities,
     getMalfunctions,
-    getMalfunctionKey, getDefaultMalfunctions, saveApartmentReview
+    getMalfunctionKey, getDefaultMalfunctions, saveApartmentReview,
+    editApartmentReview
 } from "../../../Services/FakeAptService";
 
 import UploadOptionsSection from "./UploadOptionsSection";
@@ -46,7 +47,7 @@ export default class UploadReview extends Form{
         errors: {},
         cities: [],
         malfunctionsOptions:[],
-
+        isEditMode:false
     };
     schema ={
         _id: Joi.string(),
@@ -203,11 +204,20 @@ export default class UploadReview extends Form{
 
     }
 
+    updateEditModeState(){
+        const isEditMode = this.props.match.params.isEditMode;
+        if(isEditMode){
+            this.setState({isEditMode:isEditMode});
+        }
+        console.log("isEditMode: " + this.state.isEditMode);
+    }
+
     async componentDidMount() {
         await this.populateCities();
         await this.populateApartment();
         await this.populateMalfunctionsOptions();
         await this.populateMalfunctions();
+        this.updateEditModeState();
     };
 
     async mapToViewModel(apartment, review = null) {
@@ -387,7 +397,12 @@ export default class UploadReview extends Form{
     doSubmit = async () =>{
         await this.setMainPhoto();
         const apartmentJson = this.buildApartmentJson();
+        if(this.state.isEditMode){
+            editApartmentReview(apartmentJson)
+        }
+        else{
         await saveApartmentReview(apartmentJson);
+        }
         this.props.history.push('/thank-you');
     };
 

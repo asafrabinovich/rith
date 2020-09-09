@@ -14,6 +14,7 @@ export default class PrivateArea extends Form {
         reviews: [],
         errors: {},
         isEditDetailsDisabled: true,
+        isEditMode: true,
         isPasswordChangeActive: false,
         editDetailsText: "ערוך פרטים"
     }
@@ -121,9 +122,10 @@ export default class PrivateArea extends Form {
         return userReviews
     }
     handleReviewChosen = (reviewID, apartmentID) => {
-        console.log('reviewID', reviewID)
-        console.log('apartmentID', apartmentID)
-        this.props.history.push(`/upload-review/${apartmentID}/${reviewID}`);
+        let isEditMode = this.state.isEditMode;
+        console.log('reviewID', reviewID);
+        console.log('apartmentID', apartmentID);
+        this.props.history.push(`/upload-review/${apartmentID}/${reviewID}/${isEditMode}`);
     }
     handleEditDetailsClicked = () => {
         let state = {...this.state};
