@@ -51,7 +51,7 @@ export default class LoginForm extends Form{
         }
     };
     routeToRegister = ()=>{
-        const { history } = this.props;
+        const {history} = this.props;
         history.push("/register")
 
     }
