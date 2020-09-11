@@ -14,7 +14,7 @@ const AboutUs = () => {
 
         <Container className='mt-3' maxWidth='sm'>
             <div className='text-center rtl'>
-                <h2>המטרה שלנו</h2>
+                <h2> המטרה שלנו</h2>
                 {/*{/<DatePickerInput/>/}*/}
                 <p>
                     לספק לכל שוכר פוטנציאלי את היכולת לקבל את התמונה המלאה על הדירה אותה הוא מעוניין לשכור.
