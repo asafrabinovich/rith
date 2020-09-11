@@ -11,6 +11,7 @@
     "axios": "^0.18.1",
     "bootstrap": "^4.5.2",
     "bootstrap-v4-rtl": "^4.4.1-1",
+    "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "joi": "^14.3.1",
     "joi-browser": "^13.4.0",
@@ -33,7 +34,7 @@
     "react-toastify": "^4.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server/server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
