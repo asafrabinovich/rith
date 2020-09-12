@@ -198,9 +198,13 @@ export default class UploadReview extends Form{
         this.setState({malfunctionsOptions});
     }
     async populateMalfunctions(){
-        const malfunctions = await getDefaultMalfunctions();
-        malfunctions.forEach(m => this.addToSchema(m.key));
-        await this.setState({malfunctions});
+        const reviewId = this.props.match.params.reviewId;
+        if (!reviewId) {
+            const malfunctions = await getDefaultMalfunctions();
+            malfunctions.forEach(m => this.addToSchema(m.key));
+            await this.setState({malfunctions});
+        }
+
 
     }
 
@@ -214,8 +218,8 @@ export default class UploadReview extends Form{
 
     async componentDidMount() {
         await this.populateCities();
-        await this.populateApartment();
         await this.populateMalfunctionsOptions();
+        await this.populateApartment();
         await this.populateMalfunctions();
         this.updateEditModeState();
     };
@@ -249,23 +253,38 @@ export default class UploadReview extends Form{
                 data: data,
                 malfunctions: review.listOfMalfunctions,
                 leaseFile: review.contract,
-                idFile: review.identificationCard
+                idFile: review.identificationCard,
+                isEditMode: true
             });
+            this.updateSchema();
         } else {
             data = {...apartmentFields};
             await this.setState({data: data});
         }
     }
 
-    handleMalfunctionChosen =  async chosenMalfunction =>{
+    updateSchema = () => {
+        const {malfunctions} = this.state;
+        malfunctions.forEach(m => {
+            this.addToSchema(m.key);
+            this.removeFromOptions({name: m.name, key: m.key});
+        })
+    }
+    handleMalfunctionChosen = async chosenMalfunction => {
         const allMalfunctions = this.state.malfunctions;
-        const malfunction = {name:chosenMalfunction.name,text:'',key: chosenMalfunction.key, files:[], time: Date.now()}
-        const malfunctions =[...allMalfunctions,malfunction];
+        const malfunction = {
+            name: chosenMalfunction.name,
+            text: '',
+            key: chosenMalfunction.key,
+            files: [],
+            time: Date.now()
+        }
+        const malfunctions = [...allMalfunctions, malfunction];
         this.addToSchema(chosenMalfunction.key);
         this.removeFromOptions(chosenMalfunction);
         await this.setState({malfunctions});
     };
-    addToSchema =(name)=>{
+    addToSchema = (name) => {
         let message = 'אנא מלאו שדה זה או לחצו על "הסר"';
         if(name === 'livingExperience' || name === 'recommendations'){
             message = 'שדה זה הוא חובה';
@@ -326,6 +345,7 @@ export default class UploadReview extends Form{
         const data = {...this.state.data};
         data["ratingStatus"]= parseInt(ratingStatus);
         this.setState({data});
+
     }
     handleMalfunctionChange = async ({currentTarget : input},text)=>{
         this.handleChange({currentTarget : input});
@@ -349,18 +369,19 @@ export default class UploadReview extends Form{
         let res = (city.key == "Default")?  false :  true;
         return res
     }
-    setMainPhoto = async()=>{
+    setMainPhoto = async()=> {
         const {malfunctions} = this.state;
+        const malfunctionsCopy = [...malfunctions];
         let mainPhoto;
-        malfunctions.forEach(malfunction => {
-            if (!this.state.data.mainPhoto && malfunction.files.length > 0) {
-                mainPhoto = malfunction.files[0].fileName;
-            }
+        malfunctionsCopy.reverse().forEach(malfunction => {//Check error 4
+                if (!this.state.data.mainPhoto && !mainPhoto && malfunction.files.length > 0) {
+                    mainPhoto = malfunction.files[0].fileName;
+                }
             }
         );
         const data = {...this.state.data};
-        if(mainPhoto){
-            data["mainPhoto"]= mainPhoto;
+        if (mainPhoto) {
+            data["mainPhoto"] = mainPhoto;
             this.setState({data});
         }
     }
@@ -394,26 +415,25 @@ export default class UploadReview extends Form{
         return json;
     }
 
-    doSubmit = async () =>{
+    doSubmit = async () => {
         await this.setMainPhoto();
         const apartmentJson = this.buildApartmentJson();
-        if(this.state.isEditMode){
-           // editApartmentReview(apartmentJson)
-        }
-        else{
-        await saveApartmentReview(apartmentJson);
-        }
+        this.state.isEditMode ? await saveApartmentReview(apartmentJson, this.props.match.params.reviewId)
+            : await saveApartmentReview(apartmentJson);
+
+
         this.props.history.push('/thank-you');
     };
 
 
 
-    render(){
-        const {malfunctionsOptions, malfunctions, data, errors} = this.state;
+    render() {
+        const {malfunctionsOptions, malfunctions, data, errors, leaseFile, idFile} = this.state;
         const {ratingStatus} = this.state.data;
+
         return (
             <React.Fragment>
-                <Container className= ' rtl w-75'>
+                <Container className=' rtl w-75'>
                     <Container className='mb-3'>
                         <h1 className='text-center'>העלת ביקורת</h1>
                         <h2 className='mt-3 '>פרטים "יבשים"</h2>
@@ -457,8 +477,10 @@ export default class UploadReview extends Form{
 
                         <Container >
                             <UploadDocsSection
-                                onLeaseSelected = {this.handleLeaseSelected}
-                                onIdSelected = {this.handleIdSelected}
+                                leaseFile={leaseFile}
+                                idFile={idFile}
+                                onLeaseSelected={this.handleLeaseSelected}
+                                onIdSelected={this.handleIdSelected}
                             />
                         </Container>
                         <Container>
@@ -481,10 +503,11 @@ export default class UploadReview extends Form{
                         <UploadOptionsSection
                             buttonText='+ הוסף ביקורת ספציפית'
                             onClick={this.handleMalfunctionChosen}
-                            text= "לחץ כדי לספר על תקלה ספציפית, לדוגמה: בעיה בצנרת הדירה"
-                            itemsForModal = {malfunctionsOptions}
+                            text="לחץ כדי לספר על תקלה ספציפית, לדוגמה: בעיה בצנרת הדירה"
+                            itemsForModal={malfunctionsOptions}
                         />
                     </Container>
+                    {/*<button onClick={this.setMainPhoto()}>לחץ</button>*/}
                 </Container>
             </React.Fragment>
 

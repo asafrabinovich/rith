@@ -4,26 +4,35 @@ import FileUploader from "../../Common/FileUploader";
 import {Container} from "@material-ui/core";
 import {getMalfunctionProps} from "../../../Services/FakeAptService";
 import ImagesPreviewer from "../../Common/ImagesPreviewer";
-import {uploadImage, fakeUploadImage} from "../../../Services/httpService";
+import {uploadImage, fakeUploadImage, getFileURL} from "../../../Services/httpService";
 import TextArea from "../../Common/TextArea";
 import ImagesGallery from "../../Common/ImagesGallery";
 
-export default class Malfunction extends Component{
+export default class Malfunction extends Component {
     state = {
-        files:[],
-        images:[]
+        files: [],
+        images: []
     }
 
+    componentDidMount() {
+        const {images} = this.props;
+        let files = [];
+        images.forEach(m => {
+            files = [...files, {fileURL: getFileURL(m.fileName)}]
+        })
+        this.setState({files})
+    };
 
-    renderTextAreaInput = (name,numberOfRows='2',headline,subHeadline,onChange,onRemove = null,type = 'text') =>{
+    renderTextAreaInput = (name, numberOfRows = '2', headline, subHeadline, onChange, onRemove = null, text = null, images = null, type = 'text') => {
         const {data, errors} = this.props;
-        if(name ==='livingExperience' || name ==='recommendations') {
+        // console.log("Render Text",text )
+        if (name === 'livingExperience' || name === 'recommendations') {
             onRemove = null;
         }
 
-            return <TextAreaInput
-            type = {type}
-            name= {name}
+        return <TextAreaInput
+            type={type}
+            name={name}
             // value={data[name]}
             error={errors[name]}
             rows = {numberOfRows}
@@ -33,6 +42,7 @@ export default class Malfunction extends Component{
             headline={headline}
             subHeadline={subHeadline}
             onRemove={onRemove}
+            text={text}
         />
     };
     renderTextArea = (name,numberOfRows='2',headline,subHeadline,text,type = 'text') =>{
@@ -100,12 +110,14 @@ export default class Malfunction extends Component{
     render() {
         const {name, onRemove, onChange, text, viewOnly = false, images = null} = this.props;
         const {headline, subHeadline} = getMalfunctionProps(name);
-        return(
+        // console.log("Map Text2", text)
+
+        return (
             <React.Fragment>
-                {!viewOnly && this.renderTextAreaInput(name ,'6',headline,subHeadline,onChange,onRemove)}
+                {!viewOnly && this.renderTextAreaInput(name, '6', headline, subHeadline, onChange, onRemove, text, images)}
                 {!viewOnly && this.renderImagesPreviewer()}
-                {!viewOnly && this.renderImageUploader(name )}
-                {viewOnly && this.renderTextArea(name ,'6',headline,subHeadline,text)}
+                {!viewOnly && this.renderImageUploader(name)}
+                {viewOnly && this.renderTextArea(name, '6', headline, subHeadline, text)}
                 {viewOnly && this.renderImagesGallery(images)}
 
             </React.Fragment>

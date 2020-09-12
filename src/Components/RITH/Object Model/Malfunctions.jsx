@@ -11,6 +11,7 @@ export default class Malfunctions extends Component {
             <React.Fragment>
                 {malfunctions && malfunctions
                     .map(malfunction => {
+                        // console.log("Map Text1", malfunction.text)
                         return (
                             <Container className='mt-4'>
                                 <Malfunction

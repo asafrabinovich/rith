@@ -15,7 +15,7 @@ const Footer = () =>{
         <footer className="page-footer font-small">
 
             <div style={style} class="footer-copyright text-center bg-light py-3">© 2020 Copyright:
-                <a href="http://localhost:3000/home"> WeRent</a>
+                <a href="http://localhost:3000/home"> RobInMyHood</a>
             </div>
 
         </footer>

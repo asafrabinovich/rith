@@ -34,8 +34,12 @@ export async function uploadImage(file)
     const NewImg = await axios.post(apiUrl + "/uploadFile", formData, config);
     return {fileName: NewImg.data.filename, fileURL: apiUrl + "/getFile?name=" + NewImg.data.filename};
 }
-export async function uploadFile(file)
-{
+
+export function getFileURL(fileName) {
+    return apiUrl + "/getFile?name=" + fileName;
+}
+
+export async function uploadFile(file) {
     let config = {
         headers: {
             'Authorization': 'Bearer ' + getJwt()

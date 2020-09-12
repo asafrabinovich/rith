@@ -1,8 +1,7 @@
 import React, {Component, createContext} from "react";
 import {Link, NavLink} from "react-router-dom";
 import UserIcon from "../../../Resources/Images/UserIcon.png"
-import Approved from "../../../Resources/Images/Approved.png";
-
+import Logo from '../../../Resources/Images/Logo.png'
 export default class NavBar extends Component{
     constructor(props) {
         super(props);
@@ -10,7 +9,9 @@ export default class NavBar extends Component{
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light rtl">
-                <Link className="navbar-brand rtl" to="/">RITH</Link>
+                <Link className="navbar-brand rtl" to="/">
+                    <img src={Logo} className='logo'/>
+                </Link>
                 <button className="navbar-toggler rtl" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon rtl"></span>
@@ -18,7 +19,8 @@ export default class NavBar extends Component{
                 <div className="collapse navbar-collapse rtl" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item rtl ">
-                            <NavLink className="nav-link" to="/"> חיפוש דירה<span className="sr-only">(current)</span></NavLink>
+                            <NavLink className="nav-link" to="/"> חיפוש דירה<span
+                                className="sr-only">(current)</span></NavLink>
                         </li>
                         <li className="nav-item rtl ">
                             <NavLink className="nav-link" to="/upload-review">העלה ביקורת<span className="sr-only">(current)</span></NavLink>

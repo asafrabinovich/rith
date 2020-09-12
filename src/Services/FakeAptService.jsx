@@ -190,10 +190,7 @@ const apartmentsAsJson = [
 
 // const apartments = JSON.parse(this.apartmentsAsJson);
 
-export function getApartments() {
 
-    return apartmentsAsJson;
-}
 
 export async function getApartment(id) {
     const apartments = await getApartments2();
@@ -206,9 +203,7 @@ export async function getApartments2() {
     return res.data
 }
 
-export function getApartment2(id) {
-    return apartmentsAsJson.find(m => m._id === id);
-}
+
 export function getFullAddress({street, streetNumber,city,apartmentNumber}) {
     const result = street + ' ' + streetNumber + ' ' + city + ' ' +  'דירה: ' + apartmentNumber;
     return result;
@@ -283,28 +278,36 @@ export function getMalfunctionProps(key) {
 //     const result = apiEndpoint + '/' + apartmentId;
 //     return result;
 // }
-export async function  saveApartmentReview(apartment) {
-    console.log("Apt:" ,apartment);
-    let dataToUpload = apartment;;
-    let requestURL = apiUrl+ "/reviews";
+export async function saveApartmentReview(apartment, reviewId = null) {
+    console.log("Apt:", apartment);
+    let dataToUpload = apartment;
+    ;
+    let requestURL = apiUrl + "/reviews";
     let res;
     let config = {
         headers: {
             'Authorization': 'Bearer ' + getJwt()
         }
     }
-    if(apartment._id){
+    if (apartment._id) {
         const body = {...apartment};
         delete body._id;
         dataToUpload = body;
         requestURL += "/" + apartment._id;
     }
     console.log("URL:", requestURL);
-    const dataToUploadBySchema = getDataToUploadBySchema(dataToUpload);
+    let dataToUploadBySchema = getDataToUploadBySchema(dataToUpload);
     console.log("After Schema:", dataToUploadBySchema);
+    if (reviewId) {
+        dataToUploadBySchema = {...dataToUploadBySchema, "id": reviewId}
+        console.log("dataToUploadBySchema", dataToUploadBySchema)
+        requestURL = apiUrl + "/reviews"
+        res = await httpService.put(requestURL, dataToUploadBySchema, config);
+    } else {
+        res = await httpService.post(requestURL, dataToUploadBySchema, config);
 
-    res = await httpService.post(requestURL , dataToUploadBySchema,config);
-    console.log("Result: ",res);
+    }
+    console.log("Result: ", res);
 }
 // export async function  editApartmentReview(apartment) {
 //     console.log("edit Apartment Review");

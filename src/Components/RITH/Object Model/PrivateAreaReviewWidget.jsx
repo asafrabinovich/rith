@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PrivateAreaCard from "./PrivateAreaCard";
-import {getLatestPayments} from "../../../Services/FakeAptService";
+import {getApartment, getLatestPayments} from "../../../Services/FakeAptService";
 import httpService from "../../../Services/httpService";
 
 
@@ -25,13 +25,22 @@ export default class PrivateAreaReviewWidget extends Component {
         this.getPageData();
     }
 
-    getPageData = () => {
+    getPageData = async () => {
         const {review} = this.props;
-        const title = "יונה הנביא 13, תל אביב - יפו";
+
         const status = review.status;
         const ratingStatus = review.ratingStatus;
         const mainPhoto = httpService.getImage(review.mainPhoto);
+        const title = await this.buildApartmentAddress();
         this.setState({title, status, ratingStatus, mainPhoto});
+
+    }
+
+    buildApartmentAddress = async () => {
+        const {apartmentID} = this.props;
+        const apartment = await getApartment(apartmentID);
+        return apartment.street + ' ' + apartment.streetNumber + ', ' + apartment.city;
+
     }
 
     render() {

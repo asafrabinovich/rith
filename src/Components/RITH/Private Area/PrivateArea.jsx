@@ -97,9 +97,14 @@ export default class PrivateArea extends Form {
         })
     }
     handleChangePasswordSubmit = async () => {
-        const passwordsToSend = {'oldPassword': this.state.data.oldPassword, 'newPassword': this.state.data.newPassword}
+        const passwordsToSend = {
+            'oldPassword': this.state.data.oldPassword,
+            'newPassword': this.state.data.newPassword,
+            'email': this.state.data.email
+        }
         try {
-            await auth.changePassword(passwordsToSend);
+            const res = await auth.changePassword(passwordsToSend);
+            console.log("Change Pass res: ", res);
             this.setPasswordsToDefault();
         } catch (e) {
             if (e.response && (e.response.status === 400 || e.response.status === 401)) {
@@ -123,9 +128,7 @@ export default class PrivateArea extends Form {
     }
     handleReviewChosen = (reviewID, apartmentID) => {
         let isEditMode = this.state.isEditMode;
-        console.log('reviewID', reviewID);
-        console.log('apartmentID', apartmentID);
-        this.props.history.push(`/upload-review/${apartmentID}/${reviewID}/${isEditMode}`);
+        this.props.history.push(`/upload-review/${apartmentID}/${reviewID}`);
     }
     handleEditDetailsClicked = () => {
         let state = {...this.state};
