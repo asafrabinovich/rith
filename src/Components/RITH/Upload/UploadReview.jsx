@@ -507,7 +507,7 @@ export default class UploadReview extends Form{
                             itemsForModal={malfunctionsOptions}
                         />
                     </Container>
-                    <button onClick={this.setMainPhoto()}>לחץ</button>
+                    {/*<button onClick={this.setMainPhoto()}>לחץ</button>*/}
                 </Container>
             </React.Fragment>
 
