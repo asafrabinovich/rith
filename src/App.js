@@ -40,7 +40,7 @@ export default class App extends Component{
                         <Route path='/home' component={Home}/>
                         <Route path='/apartments/:apartmentId/reviews/:userID' component={Review}/>
                         <Route path='/apartments/:apartmentId' component={Apartment}/>
-                        <Route path='/upload-review/:apartmentId/:reviewId/:isEditMode' component={UploadReview}/>
+                        {/*<Route path='/upload-review/:apartmentId/:reviewId/:isEditMode' component={UploadReview}/>*/}
                         <Route path='/upload-review/:apartmentId/:reviewId' component={UploadReview}/>
                         <Route path='/upload-review/:apartmentId' component={UploadReview}/>
                         <ProtectedRoute path='/upload-review' component={UploadReviewWelcome}/>

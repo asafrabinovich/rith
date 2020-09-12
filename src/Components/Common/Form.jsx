@@ -21,6 +21,7 @@ export default class Form extends Component{
         const errors = {};
         for (let item of error.details) errors[item.path[0]] = item.message;
 
+        // console.log("Errors",errors )
         return errors;
     };
     validateProperty = ({name,value}) => {

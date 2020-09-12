@@ -20,13 +20,12 @@ export default class ReviewWidget extends Component{
     componentDidMount() {
         this.getPageData();
     }
-    getPageData = ()=> {
+    getPageData = async () => {
         const {review} = this.props;
-        const title = "review.uploaderName";
+        const title = await httpService.getUploaderName(review.userID);
         let livingExperience = review.listOfMalfunctions.filter(m => m.key === 'livingExperience');
         const details = livingExperience[0].text.slice(0, 80) + "...";
         const mainPhoto = httpService.getImage(review.mainPhoto);
-        console.log("Review ID: ", review)//Continue
         this.setState({title, details, mainPhoto});
     }
     render() {
