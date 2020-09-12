@@ -371,8 +371,9 @@ export default class UploadReview extends Form{
     }
     setMainPhoto = async()=> {
         const {malfunctions} = this.state;
+        const malfunctionsCopy = [...malfunctions];
         let mainPhoto;
-        malfunctions.forEach(malfunction => {//Check error 4
+        malfunctionsCopy.reverse().forEach(malfunction => {//Check error 4
                 if (!this.state.data.mainPhoto && !mainPhoto && malfunction.files.length > 0) {
                     mainPhoto = malfunction.files[0].fileName;
                 }
@@ -429,7 +430,6 @@ export default class UploadReview extends Form{
     render() {
         const {malfunctionsOptions, malfunctions, data, errors, leaseFile, idFile} = this.state;
         const {ratingStatus} = this.state.data;
-        console.log("leaseFile out", leaseFile)
 
         return (
             <React.Fragment>
@@ -503,10 +503,11 @@ export default class UploadReview extends Form{
                         <UploadOptionsSection
                             buttonText='+ הוסף ביקורת ספציפית'
                             onClick={this.handleMalfunctionChosen}
-                            text= "לחץ כדי לספר על תקלה ספציפית, לדוגמה: בעיה בצנרת הדירה"
-                            itemsForModal = {malfunctionsOptions}
+                            text="לחץ כדי לספר על תקלה ספציפית, לדוגמה: בעיה בצנרת הדירה"
+                            itemsForModal={malfunctionsOptions}
                         />
                     </Container>
+                    <button onClick={this.setMainPhoto()}>לחץ</button>
                 </Container>
             </React.Fragment>
 
