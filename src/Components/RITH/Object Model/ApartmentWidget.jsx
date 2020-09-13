@@ -25,7 +25,7 @@ export default class ApartmentWidget extends Component{
         const title = this.state.title + latestRent + ' ש"ח';
         const details = apartment.numberOfRooms + ' חדרים' + ' • ' + apartment.squareFit + ' מ"ר' + ' • ' + " דירה " + apartment.apartmentNumber;
         const address = "רחוב " + apartment.street + " " + apartment.streetNumber + ", " + apartment.city;
-        const mainPhoto = httpService.getImage(apartment.mainPhoto);
+        const mainPhoto = apartment.mainPhoto;
         this.setState({title,details,address,mainPhoto});
     }
     render() {

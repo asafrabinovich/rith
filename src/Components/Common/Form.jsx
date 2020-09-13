@@ -14,14 +14,14 @@ export default class Form extends Component{
         files:[]
     };
     validate = () =>{
-        const options = {abortEarly:false};
-        const {error} = Joi.validate(this.state.data, this.schema,options);
-        if(!error) return null;
+        const options = {abortEarly: false};
+        const {error} = Joi.validate(this.state.data, this.schema, options);
+        if (!error) return null;
 
         const errors = {};
-        for (let item of error.details) errors[item.path[0]] = item.message;
-
-        // console.log("Errors",errors )
+        for (let item of error.details) {
+            errors[item.path[0]] = item.message;
+        }
         return errors;
     };
     validateProperty = ({name,value}) => {

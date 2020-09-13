@@ -15,7 +15,6 @@ import {
 import UploadOptionsSection from "./UploadOptionsSection";
 import Malfunctions from "../Object Model/Malfunctions";
 import UploadDocsSection from "./UploadDocsSection";
-import DatePickerInput from "../../Common/DatePickerInput";
 import {uploadFile} from "../../../Services/httpService";
 import { Rating } from '@material-ui/lab';
 
@@ -38,7 +37,7 @@ export default class UploadReview extends Form{
             electricityBill:'',
             taxProperty:'',
             ratingStatus: 0,
-            mainPhoto:''
+                mainPhoto: ' '
 
         },
         malfunctions: [],
@@ -128,24 +127,28 @@ export default class UploadReview extends Form{
             .label('שם הבעלים'),
         rent: Joi
             .number()
+            .required()
             .integer()
             .min(0)
             .max(400000)
             .label('שכר דירה'),
         waterBill: Joi
             .number()
+            .required()
             .integer()
             .min(0)
             .max(400000)
             .label('חשבון מים'),
         electricityBill: Joi
             .number()
+            .required()
             .integer()
             .min(0)
             .max(400000)
             .label('חשבון חשמל'),
         taxProperty: Joi
             .number()
+            .required()
             .integer()
             .min(0)
             .max(400000)
@@ -213,7 +216,6 @@ export default class UploadReview extends Form{
         if(isEditMode){
             this.setState({isEditMode:isEditMode});
         }
-        console.log("isEditMode: " + this.state.isEditMode);
     }
 
     async componentDidMount() {
@@ -269,6 +271,7 @@ export default class UploadReview extends Form{
             this.addToSchema(m.key);
             this.removeFromOptions({name: m.name, key: m.key});
         })
+
     }
     handleMalfunctionChosen = async chosenMalfunction => {
         const allMalfunctions = this.state.malfunctions;
@@ -338,7 +341,7 @@ export default class UploadReview extends Form{
         this.setState({idFile})
     };
     handleLeaseSelected = async file =>{
-        const leaseFile = await uploadFile(file);;
+        const leaseFile = await uploadFile(file);
         this.setState({leaseFile})
     };
     handleScoreSelected =  (ratingStatus) =>{
@@ -375,7 +378,7 @@ export default class UploadReview extends Form{
         let mainPhoto;
         malfunctionsCopy.reverse().forEach(malfunction => {//Check error 4
                 if (!this.state.data.mainPhoto && !mainPhoto && malfunction.files.length > 0) {
-                    mainPhoto = malfunction.files[0].fileName;
+                    mainPhoto = malfunction.files[0];
                 }
             }
         );
