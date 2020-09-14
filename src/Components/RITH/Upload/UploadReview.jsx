@@ -37,7 +37,7 @@ export default class UploadReview extends Form{
             electricityBill:'',
             taxProperty:'',
             ratingStatus: 0,
-                mainPhoto: ' '
+                mainPhoto: ''
 
         },
         malfunctions: [],
@@ -192,8 +192,9 @@ export default class UploadReview extends Form{
              }
          }
      }
-    async populateCities(){
-        const cities = await getCities();
+    async populateCities() {
+        const cities = [{name: "בחר עיר:"}, ...await getCities()];
+        console.log("cities: ", cities)
         this.setState({cities});
     }
     async populateMalfunctionsOptions(){
@@ -377,7 +378,9 @@ export default class UploadReview extends Form{
         const malfunctionsCopy = [...malfunctions];
         let mainPhoto;
         malfunctionsCopy.reverse().forEach(malfunction => {//Check error 4
-                if (!this.state.data.mainPhoto && !mainPhoto && malfunction.files.length > 0) {
+                if (malfunction.key === 'livingExperience') {
+                    mainPhoto = malfunction.files[0];
+                } else if (!this.state.data.mainPhoto && !mainPhoto && malfunction.files.length > 0) {
                     mainPhoto = malfunction.files[0];
                 }
             }
@@ -441,7 +444,7 @@ export default class UploadReview extends Form{
                         <h1 className='text-center'>העלת ביקורת</h1>
                         <h2 className='mt-3 '>פרטים "יבשים"</h2>
                         <h6 className='mb-4 '>אנא מלאו את השדות הבאים:</h6>
-                        <p>דירוג כללי:</p>
+                        <p>דירוג כללי (אנא דרגו מספר כוכבים):</p>
                         <Rating dir="ltr" name="simple-controlled" value={ratingStatus} size="large"
                                 onChange={(e) => this.handleScoreSelected(e.target.value)}/>
 
