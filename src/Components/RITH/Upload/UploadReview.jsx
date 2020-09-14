@@ -170,11 +170,6 @@ export default class UploadReview extends Form{
              const reviewId = this.props.match.params.reviewId;
              if (apartmentId === 'new') return;
              const apartment = await getApartment(apartmentId);
-
-
-             // console.log("apartment",apartment)
-             //
-             // console.log("review",review)
              if (apartment._id) {
                  delete apartment[apartment._id];
              }

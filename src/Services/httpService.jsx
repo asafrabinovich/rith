@@ -52,7 +52,6 @@ export async function uploadFile(file) {
 // }
 
 export async function sendContactForm(data) {
-    console.log("Json Before Sending: ", data)
     await axios.post(apiUrl + "/contact", data);
 }
 

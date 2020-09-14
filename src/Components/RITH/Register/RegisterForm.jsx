@@ -45,9 +45,7 @@ export default class RegisterForm extends Form{
     doSubmit = async () =>{
         try {
             const {data} = this.state;
-            console.log("Data:", data)
             const response = await register(this.state.data);
-            console.log("Response",response)
             await auth.login(data.username,data.password);
             // auth.loginWithJwt(response.headers['x-auth-token']);
             window.location = '/';

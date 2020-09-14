@@ -211,7 +211,6 @@ export function getFullAddress({street, streetNumber,city,apartmentNumber}) {
 }
 
 export function getLatestPayments(apartment) {
-    console.log("Apartment: ", apartment)
     let reviews = {...apartment.reviews};
     reviews = _.orderBy(reviews, "_id", 'desc');
     const latestReview = {...reviews[0]};
@@ -280,7 +279,6 @@ export function getMalfunctionProps(key) {
 //     return result;
 // }
 export async function saveApartmentReview(apartment, reviewId = null) {
-    console.log("Apt:", apartment);
     let dataToUpload = apartment;
     ;
     let requestURL = apiUrl + "/reviews";
@@ -296,43 +294,16 @@ export async function saveApartmentReview(apartment, reviewId = null) {
         dataToUpload = body;
         requestURL += "/" + apartment._id;
     }
-    console.log("URL:", requestURL);
     let dataToUploadBySchema = getDataToUploadBySchema(dataToUpload);
-    console.log("After Schema:", dataToUploadBySchema);
     if (reviewId) {
         dataToUploadBySchema = {...dataToUploadBySchema, "id": reviewId}
-        console.log("dataToUploadBySchema", dataToUploadBySchema)
         requestURL = apiUrl + "/reviews"
         res = await httpService.put(requestURL, dataToUploadBySchema, config);
     } else {
         res = await httpService.post(requestURL, dataToUploadBySchema, config);
 
     }
-    console.log("Result: ", res);
 }
-// export async function  editApartmentReview(apartment) {
-//     console.log("edit Apartment Review");
-//     let dataToEdit = apartment;
-//     let requestURL = apiUrl + "/reviews";
-//     let res;
-//     let config = {
-//         headers: {
-//             'Authorization': 'Bearer ' + getJwt()
-//         }
-//     }
-//     // if(apartment._id){
-//     //     const body = {...apartment};
-//     //     delete body._id;
-//     //     dataToEdit = body;
-//     //     requestURL += "/" + apartment._id;
-//     // }
-//     console.log("URL:", requestURL);
-//     const dataToUploadBySchema = getDataToUploadBySchema(dataToEdit);
-//     console.log("After Schema:", dataToUploadBySchema);
-
-//     res = await httpService.put(requestURL , dataToUploadBySchema,config);
-//     console.log("Result: ",res);
-// }
 
 function getDataToUploadBySchema(dataToUploadBySchema) {
     return {

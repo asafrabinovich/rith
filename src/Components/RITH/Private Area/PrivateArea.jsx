@@ -104,7 +104,6 @@ export default class PrivateArea extends Form {
         }
         try {
             const res = await auth.changePassword(passwordsToSend);
-            console.log("Change Pass res: ", res);
             this.setPasswordsToDefault();
         } catch (e) {
             if (e.response && (e.response.status === 400 || e.response.status === 401)) {

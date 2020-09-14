@@ -24,7 +24,6 @@ export default class Malfunction extends Component {
 
     renderTextAreaInput = (name, numberOfRows = '2', headline, subHeadline, onChange, onRemove = null, text = null, images = null, type = 'text') => {
         const {data, errors} = this.props;
-        // console.log("Render Text",text )
         if (name === 'livingExperience' || name === 'recommendations') {
             onRemove = null;
         }
@@ -109,8 +108,6 @@ export default class Malfunction extends Component {
     render() {
         const {name, onRemove, onChange, text, viewOnly = false, images = null} = this.props;
         const {headline, subHeadline} = getMalfunctionProps(name);
-        // console.log("Map Text2", text)
-
         return (
             <React.Fragment>
                 {!viewOnly && this.renderTextAreaInput(name, '6', headline, subHeadline, onChange, onRemove, text, images)}

@@ -37,7 +37,6 @@ export function getUserDetails() {
         }
     }
     const UserDetails = httpService.get(apiUrl + "/getUserDetails", config);
-    console.log(UserDetails);
     return UserDetails;
 }
 
@@ -54,7 +53,6 @@ export function editUserDetails(name, email) {
             'userName': name,
         }
         , config)
-    console.log(editDetailsAffirmation);
     return editDetailsAffirmation;
 }
 
