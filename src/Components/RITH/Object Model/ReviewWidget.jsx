@@ -25,7 +25,7 @@ export default class ReviewWidget extends Component{
         const title = await httpService.getUploaderName(review.userID);
         let livingExperience = review.listOfMalfunctions.filter(m => m.key === 'livingExperience');
         const details = livingExperience[0].text.slice(0, 80) + "...";
-        const mainPhoto = httpService.getImage(review.mainPhoto);
+        const mainPhoto = review.mainPhoto;
         this.setState({title, details, mainPhoto});
     }
     render() {

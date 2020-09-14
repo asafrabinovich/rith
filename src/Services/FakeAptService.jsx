@@ -1,8 +1,9 @@
 import _ from "lodash";
 import {apiUrl} from "../config";
-import httpService from "./httpService";
+import httpService, {uploadFile} from "./httpService";
 import {getJwt} from "./authService";
 import axios from "axios";
+import apartment from '../Resources/Images/Apartment.png';
 const apiEndpoint = apiUrl + "/apartments";
 
 const apartmentsAsJson = [
@@ -333,17 +334,17 @@ export async function saveApartmentReview(apartment, reviewId = null) {
 //     console.log("Result: ",res);
 // }
 
-function getDataToUploadBySchema(dataToUploadBySchema){
-    return{
+function getDataToUploadBySchema(dataToUploadBySchema) {
+    return {
         "createDate": dataToUploadBySchema.createDate,
         "rentalPeriod": dataToUploadBySchema.rentalPeriod,
         "lastRent": dataToUploadBySchema.lastRent,
-        "lastWaterBill":dataToUploadBySchema.lastWaterBill,
-        "lastElectricityBill":dataToUploadBySchema.lastElectrictyBill,
-        "propertyTax":dataToUploadBySchema.propertyTax,
-        "contract":dataToUploadBySchema.contract,
-        "identificationCard":dataToUploadBySchema.identificationCard,
-        "street":dataToUploadBySchema.street,
+        "lastWaterBill": dataToUploadBySchema.lastWaterBill,
+        "lastElectricityBill": dataToUploadBySchema.lastElectrictyBill,
+        "propertyTax": dataToUploadBySchema.propertyTax,
+        "contract": dataToUploadBySchema.contract,
+        "identificationCard": dataToUploadBySchema.identificationCard,
+        "street": dataToUploadBySchema.street,
         "streetNumber":dataToUploadBySchema.streetNumber,
         "city":dataToUploadBySchema.city,
         "apartmentNumber":dataToUploadBySchema.apartmentNumber,
@@ -354,7 +355,7 @@ function getDataToUploadBySchema(dataToUploadBySchema){
         "listOfMalfunctions":getListOfMalfunctions(dataToUploadBySchema.listOfMalfunctions),
         "ratingStatus": dataToUploadBySchema.ratingStatus,
         "status": dataToUploadBySchema.status,
-        "mainPhoto": dataToUploadBySchema.mainPhoto
+        "mainPhoto": dataToUploadBySchema.mainPhoto ? dataToUploadBySchema.mainPhoto : "https://www.flaticon.com/premium-icon/icons/svg/1018/1018627.svg"
 
     }
 
@@ -372,7 +373,7 @@ function getListOfMalfunctions(listOfMalfunctions) {
          "name": mal.name,
          "files":_.forEach(mal.files, file => {
              files = [...files,{
-                 "fileName":file.name
+                 "fileURL": file.fileURL
              }]
          })
      }]

@@ -31,7 +31,7 @@ class CarouselPage extends Component {
                                     <MDBView>
                                         <img
                                             className="d-block w-100"
-                                            src={httpService.getImage(image.fileName)}
+                                            src={image}
                                         />
                                         <MDBMask overlay="black-light" />
                                     </MDBView>

@@ -30,7 +30,7 @@ export default class PrivateAreaReviewWidget extends Component {
 
         const status = review.status;
         const ratingStatus = review.ratingStatus;
-        const mainPhoto = httpService.getImage(review.mainPhoto);
+        const mainPhoto = review.mainPhoto;
         const title = await this.buildApartmentAddress();
         this.setState({title, status, ratingStatus, mainPhoto});
 

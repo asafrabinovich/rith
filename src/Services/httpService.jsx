@@ -21,23 +21,6 @@ axios.interceptors.response.use(null,error => {
 export function setJwt(jwt) {
     axios.defaults.headers.common['x-auth-token'] = jwt;
 }
-export async function uploadImage(file)
-{
-    let config = {
-        headers: {
-            'Authorization': 'Bearer ' + getJwt()
-        }
-    }
-    let formData = new FormData();
-    formData.append("file", file);
-
-    const NewImg = await axios.post(apiUrl + "/uploadFile", formData, config);
-    return {fileName: NewImg.data.filename, fileURL: apiUrl + "/getFile?name=" + NewImg.data.filename};
-}
-
-export function getFileURL(fileName) {
-    return apiUrl + "/getFile?name=" + fileName;
-}
 
 export async function uploadFile(file) {
     let config = {
@@ -47,19 +30,36 @@ export async function uploadFile(file) {
     }
     let formData = new FormData();
     formData.append("file", file);
-    const NewFile = await axios.post(apiUrl + "/uploadSensitiveFile", formData, config);
-    return NewFile.data.filename;
+
+    const NewFile = await axios.post(apiUrl + "/uploadFile", formData, config);
+    return NewFile.data.url;
 }
+
+// export function getFileURL(fileName) {
+//     return apiUrl + "/getFile?name=" + fileName;
+// }
+
+// export async function uploadFile(file) {
+//     let config = {
+//         headers: {
+//             'Authorization': 'Bearer ' + getJwt()
+//         }
+//     }
+//     let formData = new FormData();
+//     formData.append("file", file);
+//     const NewFile = await axios.post(apiUrl + "/uploadSensitiveFile", formData, config);
+//     return NewFile.data.filename;
+// }
 
 export async function sendContactForm(data) {
     console.log("Json Before Sending: ", data)
     await axios.post(apiUrl + "/contact", data);
 }
 
-export function getImage(imageName) {
-
-    return apiUrl + "/getFile?name=" + imageName;
-}
+// export function getImage(imageName) {
+//
+//     return apiUrl + "/getFile?name=" + imageName;
+// }
 
 export async function getUploaderName(userID) {
     const res = await axios.post(apiUrl + "/getUserNameById", {'id': userID});
@@ -73,7 +73,6 @@ export default {
     delete: axios.delete,
     setJwt,
     sendContactForm,
-    getImage,
     getUploaderName
 
 }
