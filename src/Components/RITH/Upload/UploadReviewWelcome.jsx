@@ -47,19 +47,22 @@ export default class UploadReviewWelcome extends Component {
         return(
             <React.Fragment>
                 <Container className='mt-3' maxWidth='sm'>
-                    <h1 className='text-center rtl'>חפשו דירה</h1>
-                    <p className='text-center rtl'>אנחנו בשם האתר מקפידים על הביקורות שעולות כאן באתר ולכן אנחנו מבקשים ממך לעלות ביקורת עניינית, מנומסת ומפורטת ככל האפשר. כדי לעלות ביקורת נדרוש מסמך המהווה הוכחה שאכן שכרת את הדירה והביקורת תצטרך לעבור אישור מהמערכת לפני שהיא תעלה באתר.
+                    <h1 className='text-center rtl'>העלו ביקורת</h1>
+                    <p className='text-center rtl'>אנחנו ב Rob In My Hood מקפידים על הביקורות שעולות כאן באתר ולכן אנחנו
+                        מבקשים ממך לעלות ביקורת עניינית, מנומסת ומפורטת ככל האפשר. כדי לעלות ביקורת נדרוש מסמך המהווה
+                        הוכחה שאכן שכרת את הדירה והביקורת תצטרך לעבור אישור מהמערכת לפני שהיא תעלה באתר.
                     </p>
                     <div className='rtl'>
                         <SearchBoxWithButton
                             onChange={this.handleSearchChange}
                             onclick={this.handleSearchSubmit}
-                            value= {searchQuery}
-                            addToClassName = "w-100"
-                            placeholder ='חפשו כתובת או עיר'
+                            value={searchQuery}
+                            addToClassName="w-100"
+                            placeholder='חפשו כתובת או עיר'
                             buttonText='בחר כתובת'
                         />
                         {searchQuery && !totalCount && <h2 className='h2 small rtl'>לא נמצאו תוצאות</h2>}
+                        <p className='text-justify small'>הכניסו כתובת ולחצו על "בחר כתובת" או בחרו דירה מהמאגר</p>
                     </div>
                 </Container>
 

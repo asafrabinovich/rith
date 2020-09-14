@@ -42,6 +42,7 @@ export default class Form extends Component{
         const errorMessage = this.validateProperty(input);
         if(errorMessage){
             errors[input.name] = errorMessage;
+
         }
         else{
             delete errors[input.name];
@@ -51,7 +52,6 @@ export default class Form extends Component{
         data[input.name]= input.value;
         this.setState({data, errors});
     };
-
 
     renderButton = (label,addToValidation = ()=> {return true}) => {
         return <button
