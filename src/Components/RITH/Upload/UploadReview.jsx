@@ -290,17 +290,29 @@ export default class UploadReview extends Form{
     };
     addToSchema = (name) => {
         let message = 'אנא מלאו שדה זה או לחצו על "הסר"';
-        if(name === 'livingExperience' || name === 'recommendations'){
+        if (name === 'livingExperience' || name === 'recommendations') {
             message = 'שדה זה הוא חובה';
         }
-        const add = Joi
-            .string()
-            .required()
-            .error(() => {
-                return {
-                    message: message,
-                };
-            })
+        let add;
+        if (this.state.isEditMode) {
+            add = Joi
+                .string()
+                .error(() => {
+                    return {
+                        message: message,
+                    };
+                })
+        } else {
+            add = Joi
+                .string()
+                .required()
+                .error(() => {
+                    return {
+                        message: message,
+                    };
+                })
+        }
+
         this.schema[name] = add;
 
     }
@@ -457,13 +469,13 @@ export default class UploadReview extends Form{
                                     {this.renderInput('street', 'רחוב')}
                                     {this.renderInput('streetNumber', 'מספר')}
                                     {this.renderSelect('city', 'עיר', this.state.cities, this.state.data.city)}
-                                    {this.renderInput('apartmentNumber', 'מספר דירה')}
+                                    {this.renderInput('apartmentNumber', 'מספר דירה (לבית פרטי הכניסו 0)')}
                                 </Container>
                             </GridListTile>
 
                             <GridListTile className='h-auto ' >
                                 <Container className='w-75'>
-                                    {this.renderInput('floorNumber', 'קומה')}
+                                    {this.renderInput('floorNumber', 'קומה ')}
                                     {this.renderInput('numberOfRooms', 'מספר חדרים')}
                                     {this.renderInput('squareFit', 'שטח במ"ר')}
                                     {this.renderInput('ownerName', 'שם הבעלים')}
