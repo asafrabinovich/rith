@@ -189,7 +189,6 @@ export default class UploadReview extends Form{
      }
     async populateCities() {
         const cities = [{name: "בחר עיר:"}, ...await getCities()];
-        console.log("cities: ", cities)
         this.setState({cities});
     }
     async populateMalfunctionsOptions(){
